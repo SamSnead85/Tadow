@@ -1,0 +1,25 @@
+{
+    "name": "verity",
+    "version": "1.0.0",
+    "description": "Verity - AI-Powered Decision Concierge Platform",
+    "private": true,
+    "workspaces": [
+        "apps/*"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+        "dev:web": "npm run dev --workspace=apps/web",
+        "dev:api": "npm run dev --workspace=apps/api",
+        "build": "npm run build --workspace=apps/web",
+        "db:push": "npm run db:push --workspace=apps/api",
+        "db:seed": "npm run db:seed --workspace=apps/api",
+        "db:studio": "npm run db:studio --workspace=apps/api"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2",
+        "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    }
+}

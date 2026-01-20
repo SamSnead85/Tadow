@@ -1,0 +1,458 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   VERITY - Next-Gen AI E-Commerce Design System
+   Version 3.0 - Premium Deal Intelligence
+   ============================================ */
+
+:root {
+  /* Core Colors */
+  --bg-primary: #09090b;
+  --bg-secondary: #18181b;
+  --bg-tertiary: #27272a;
+  --border-primary: rgba(63, 63, 70, 0.5);
+  --border-glow: rgba(16, 185, 129, 0.3);
+
+  /* Accent Gradients */
+  --gradient-mint: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
+  --gradient-ai: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #0ea5e9 100%);
+  --gradient-hot: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+  --gradient-savings: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+
+  /* Glass Effects */
+  --glass-bg: rgba(24, 24, 27, 0.8);
+  --glass-border: rgba(63, 63, 70, 0.4);
+}
+
+/* Base Styles */
+body {
+  @apply bg-zinc-950 text-white antialiased;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Container */
+.container-wide {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* ============================================
+   PREMIUM GLASS EFFECTS
+   ============================================ */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-strong {
+  background: rgba(24, 24, 27, 0.95);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(63, 63, 70, 0.6);
+}
+
+/* ============================================
+   PREMIUM CARD SYSTEM
+   ============================================ */
+
+.deal-card {
+  @apply relative bg-zinc-900/80 backdrop-blur-sm rounded-2xl overflow-hidden;
+  @apply border border-zinc-800/60 transition-all duration-300;
+  @apply hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5;
+}
+
+.deal-card::before {
+  content: '';
+  @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.deal-card:hover::before {
+  @apply opacity-100;
+}
+
+.deal-card-featured {
+  @apply deal-card;
+  @apply border-emerald-500/20 bg-gradient-to-br from-zinc-900 to-zinc-900/80;
+}
+
+.deal-card-featured::after {
+  content: '';
+  @apply absolute top-0 left-0 right-0 h-px;
+  background: var(--gradient-mint);
+}
+
+/* ============================================
+   AI-POWERED ELEMENTS
+   ============================================ */
+
+.ai-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  @apply bg-gradient-to-r from-violet-500/20 to-indigo-500/20;
+  @apply border border-violet-500/30 text-violet-300;
+}
+
+.ai-glow {
+  @apply relative;
+}
+
+.ai-glow::before {
+  content: '';
+  @apply absolute -inset-1 rounded-xl opacity-20 blur-xl;
+  background: var(--gradient-ai);
+  z-index: -1;
+}
+
+.ai-score-ring {
+  @apply relative flex items-center justify-center rounded-full;
+  @apply font-bold text-white;
+}
+
+.ai-score-ring::before {
+  content: '';
+  @apply absolute inset-0 rounded-full;
+  background: conic-gradient(from 0deg, #10b981 var(--score-percent), transparent var(--score-percent));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+}
+
+/* ============================================
+   NAVIGATION & HEADER
+   ============================================ */
+
+.nav-glass {
+  @apply fixed top-0 left-0 right-0 z-50;
+  background: rgba(9, 9, 11, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(63, 63, 70, 0.3);
+}
+
+.nav-link {
+  @apply relative px-4 py-2 text-sm font-medium text-zinc-400;
+  @apply hover:text-white transition-colors;
+}
+
+.nav-link-active {
+  @apply text-white;
+}
+
+.nav-link-active::after {
+  content: '';
+  @apply absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-emerald-400;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl;
+  @apply font-semibold text-sm text-zinc-900;
+  @apply transition-all duration-200;
+  background: var(--gradient-mint);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+}
+
+.btn-primary:hover {
+  @apply scale-[1.02];
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl;
+  @apply font-semibold text-sm text-white;
+  @apply bg-zinc-800 border border-zinc-700/50;
+  @apply hover:bg-zinc-700 hover:border-zinc-600 transition-all;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg;
+  @apply text-sm text-zinc-400 hover:text-white hover:bg-zinc-800/50 transition-all;
+}
+
+.btn-ai {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl;
+  @apply font-semibold text-sm text-white;
+  @apply transition-all duration-200;
+  background: var(--gradient-ai);
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+}
+
+.btn-ai:hover {
+  @apply scale-[1.02];
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold;
+}
+
+.badge-hot {
+  @apply bg-gradient-to-r from-orange-500 to-red-500 text-white;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+}
+
+.badge-deal {
+  @apply bg-gradient-to-r from-emerald-500 to-teal-500 text-white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+.badge-low {
+  @apply bg-sky-500/20 text-sky-300 border border-sky-500/30;
+}
+
+.badge-ai {
+  @apply bg-violet-500/20 text-violet-300 border border-violet-500/30;
+}
+
+.badge-marketplace {
+  @apply bg-zinc-800 text-zinc-300 border border-zinc-700/50;
+}
+
+.badge-condition {
+  @apply bg-zinc-800/50 text-zinc-400;
+}
+
+.badge-savings {
+  @apply bg-emerald-500 text-zinc-900 font-bold px-2.5;
+}
+
+/* ============================================
+   INPUTS & FORMS
+   ============================================ */
+
+.input-glass {
+  @apply w-full px-4 py-3 rounded-xl;
+  @apply bg-zinc-900/80 backdrop-blur-sm;
+  @apply border border-zinc-800 text-white;
+  @apply placeholder:text-zinc-500;
+  @apply focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20;
+  @apply transition-all duration-200;
+}
+
+.search-hero {
+  @apply w-full pl-14 pr-32 py-5 rounded-2xl;
+  @apply bg-zinc-900/90 backdrop-blur-xl;
+  @apply border border-zinc-800 text-white text-lg;
+  @apply placeholder:text-zinc-500;
+  @apply focus:outline-none focus:border-emerald-500/40 focus:ring-4 focus:ring-emerald-500/10;
+  @apply transition-all duration-200;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   PRICING DISPLAY
+   ============================================ */
+
+.price-current {
+  @apply text-2xl font-bold text-white;
+}
+
+.price-original {
+  @apply text-sm text-zinc-500 line-through;
+}
+
+.price-savings {
+  @apply text-emerald-400 font-semibold;
+}
+
+/* ============================================
+   AI VERDICTS
+   ============================================ */
+
+.verdict-incredible {
+  @apply text-emerald-400;
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.verdict-great {
+  @apply text-sky-400;
+}
+
+.verdict-fair {
+  @apply text-amber-400;
+}
+
+.verdict-overpriced {
+  @apply text-red-400;
+}
+
+/* ============================================
+   CATEGORY PILLS
+   ============================================ */
+
+.category-pill {
+  @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-full;
+  @apply text-sm font-medium whitespace-nowrap transition-all duration-200;
+}
+
+.category-pill-active {
+  @apply bg-emerald-500 text-zinc-900;
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3);
+}
+
+.category-pill-inactive {
+  @apply bg-zinc-800/60 text-zinc-400 border border-zinc-700/50;
+  @apply hover:bg-zinc-800 hover:text-white hover:border-zinc-600;
+}
+
+/* ============================================
+   FILTERS
+   ============================================ */
+
+.filter-section {
+  @apply p-4 bg-zinc-900/60 rounded-xl border border-zinc-800/50;
+}
+
+.filter-checkbox {
+  @apply w-4 h-4 rounded border-zinc-600 bg-zinc-800;
+  @apply text-emerald-500 focus:ring-emerald-500/20 focus:ring-offset-0;
+}
+
+/* ============================================
+   GRADIENTS & TEXT EFFECTS
+   ============================================ */
+
+.text-gradient-mint {
+  @apply bg-clip-text text-transparent;
+  background-image: var(--gradient-mint);
+}
+
+.text-gradient-ai {
+  @apply bg-clip-text text-transparent;
+  background-image: var(--gradient-ai);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes gradient-shift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-zinc-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-zinc-600;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .search-hero {
+    @apply text-base py-4 pl-12 pr-4;
+  }
+}
+
+/* ============================================
+   AMBIENT EFFECTS
+   ============================================ */
+
+.ambient-glow {
+  @apply fixed pointer-events-none;
+  background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(16, 185, 129, 0.06),
+      transparent 40%);
+}
+
+.hero-gradient {
+  @apply absolute inset-0 pointer-events-none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139, 92, 246, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(6, 182, 212, 0.08), transparent);
+}

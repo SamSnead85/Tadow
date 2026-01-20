@@ -1,0 +1,195 @@
+// Prisma Schema for Verity Platform
+// Uses SQLite for easy local development
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & PERSONALIZATION
+// ============================================
+
+model User {
+  id           String         @id @default(uuid())
+  email        String?        @unique
+  persona      String?
+  answers      String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  wishlistItems WishlistItem[]
+}
+
+// ============================================
+// PRODUCT RESEARCH (Original Verity)
+// ============================================
+
+model Product {
+  id                  String   @id @default(uuid())
+  name                String
+  brand               String
+  category            String   @default("laptop")
+  imageUrl            String?
+  bottomLine          String
+  
+  verityScore         Int
+  scoreBreakdown      String
+  specs               String
+  
+  idealPersonas       String
+  strengthsSummary    String
+  weaknessesSummary   String
+  userReviewSummary   String
+  
+  prices              Price[]
+  reviews             Review[]
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Price {
+  id          String   @id @default(uuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  retailer    String
+  price       Float
+  url         String
+  inStock     Boolean  @default(true)
+  lastChecked DateTime @default(now())
+}
+
+model Review {
+  id            String   @id @default(uuid())
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  source        String
+  rating        Float?
+  title         String?
+  content       String
+  sentiment     String?
+  keyThemes     String?
+  createdAt     DateTime @default(now())
+}
+
+// ============================================
+// DEAL AGGREGATION ENGINE (New)
+// ============================================
+
+model Marketplace {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  type        String   // "retail", "auction", "classifieds", "p2p"
+  logoUrl     String?
+  baseUrl     String
+  color       String?  // Brand color for UI
+  deals       Deal[]
+  createdAt   DateTime @default(now())
+}
+
+model Deal {
+  id              String      @id @default(uuid())
+  title           String
+  description     String?
+  imageUrl        String?
+  
+  // Pricing
+  originalPrice   Float?
+  currentPrice    Float
+  currency        String      @default("USD")
+  discountPercent Float?
+  
+  // Source
+  marketplaceId   String
+  marketplace     Marketplace @relation(fields: [marketplaceId], references: [id], onDelete: Cascade)
+  externalUrl     String
+  externalId      String?
+  
+  // Location (for local deals)
+  city            String?
+  state           String?
+  zipCode         String?
+  
+  // Product Info
+  condition       String      @default("new")  // "new", "used", "refurbished", "like-new"
+  category        String
+  subcategory     String?
+  brand           String?
+  
+  // AI Analysis
+  dealScore       Int?        // 1-100 (AI calculated)
+  aiVerdict       String?     // "Incredible Deal", "Great Value", "Fair Price", "Overpriced"
+  priceVsAverage  Float?      // % below/above market average (negative = cheaper)
+  isFeatured      Boolean     @default(false)
+  isHot           Boolean     @default(false)
+  
+  // Price Intelligence (Keepa/CamelCamelCamel parity)
+  isAllTimeLow    Boolean     @default(false)
+  allTimeLowPrice Float?
+  historicHighPrice Float?
+  pricePrediction String?     // "buy_now", "wait", "neutral"
+  priceDropPercent30d Float?  // % price drop in last 30 days
+  
+  // Review Intelligence (Fakespot parity)
+  fakeReviewRisk  Int?        // 0-100 (higher = more suspicious)
+  reviewQualityScore Int?     // 0-100 (overall review trustworthiness)
+  verifiedPurchasePercent Float? // % of reviews from verified buyers
+  
+  // Seller
+  sellerName      String?
+  sellerRating    Float?
+  sellerReviews   Int?
+  isVerifiedSeller Boolean    @default(false)
+  
+  // Engagement
+  views           Int         @default(0)
+  saves           Int         @default(0)
+  
+  // Timestamps
+  postedAt        DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  priceHistory    DealPriceHistory[]
+  wishlistedBy    WishlistItem[]
+}
+
+model DealPriceHistory {
+  id         String   @id @default(uuid())
+  dealId     String
+  deal       Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  price      Float
+  recordedAt DateTime @default(now())
+}
+
+model WishlistItem {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dealId     String
+  deal       Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  priceAlert Float?   // Notify when price drops below this
+  createdAt  DateTime @default(now())
+  
+  @@unique([userId, dealId])
+}
+
+// ============================================
+// CATEGORIES
+// ============================================
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  icon        String?
+  parentId    String?
+  dealCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+}
