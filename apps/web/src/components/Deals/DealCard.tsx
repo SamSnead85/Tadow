@@ -77,6 +77,22 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
         return 'verdict-overpriced';
     };
 
+    // Calculate discount percentage properly - prevent impossible values
+    const getDiscountPercent = (): number | null => {
+        // If we have a valid discountPercent, use it (but validate)
+        if (deal.discountPercent !== undefined) {
+            const dp = Math.abs(deal.discountPercent);
+            if (dp > 0 && dp <= 99) return dp;
+        }
+        // Calculate from prices
+        if (deal.originalPrice && deal.currentPrice && deal.originalPrice > deal.currentPrice) {
+            const calculated = Math.round(((deal.originalPrice - deal.currentPrice) / deal.originalPrice) * 100);
+            if (calculated > 0 && calculated <= 99) return calculated;
+        }
+        return null;
+    };
+    const validDiscount = getDiscountPercent();
+
     const handleShare = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -192,10 +208,10 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
                         )}
                     </div>
 
-                    {/* Discount Badge */}
-                    {deal.discountPercent && deal.discountPercent >= 10 && (
+                    {/* Discount Badge - Use validated discount to prevent impossible values */}
+                    {validDiscount && validDiscount >= 10 && (
                         <div className="absolute top-3 right-3 px-2.5 py-1 bg-amber-500 text-zinc-900 text-xs font-bold rounded-lg shadow-lg shadow-amber-500/25">
-                            -{deal.discountPercent}%
+                            -{validDiscount}%
                         </div>
                     )}
 
