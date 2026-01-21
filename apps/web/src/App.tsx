@@ -10,6 +10,7 @@ import { SearchPage } from './pages/SearchPage';
 import { DealDetailPage } from './pages/DealDetailPage';
 import { WatchlistPage } from './pages/WatchlistPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { CategoryPage } from './pages/CategoryPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -57,6 +58,7 @@ function App() {
                         <Route path="search" element={<AnimatedPage><SearchPage /></AnimatedPage>} />
                         <Route path="deal/:id" element={<AnimatedPage><DealDetailPage /></AnimatedPage>} />
                         <Route path="watchlist" element={<AnimatedPage><WatchlistPage /></AnimatedPage>} />
+                        <Route path="category/:category" element={<AnimatedPage><CategoryPage /></AnimatedPage>} />
 
                         {/* Product Research */}
                         <Route path="assistant" element={<AnimatedPage><HomePage /></AnimatedPage>} />
