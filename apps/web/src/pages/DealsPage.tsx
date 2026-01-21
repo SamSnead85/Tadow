@@ -222,8 +222,49 @@ export function DealsPage() {
                 </div>
             </section>
 
-            {/* Main Content - Products First */}
-            <div className="container-wide py-8">
+            {/* Value Proposition Banner */}
+            <section className="py-10 border-b border-zinc-800/30">
+                <div className="container-wide">
+                    <div className="max-w-4xl mx-auto text-center">
+                        {/* Headline */}
+                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                            The smartest way to find
+                            <span className="text-gradient-gold"> tech deals</span>
+                        </h1>
+
+                        {/* Subtitle */}
+                        <p className="text-zinc-400 text-lg mb-8 max-w-2xl mx-auto">
+                            AI-powered deal intelligence across every major marketplace.
+                            Never overpay again.
+                        </p>
+
+                        {/* Value Props */}
+                        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-violet-500/15 flex items-center justify-center">
+                                    <Sparkles className="w-4 h-4 text-violet-400" />
+                                </div>
+                                <span className="text-sm text-zinc-300 font-medium">AI-Powered Scoring</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center">
+                                    <Flame className="w-4 h-4 text-amber-400" />
+                                </div>
+                                <span className="text-sm text-zinc-300 font-medium">10+ Marketplaces</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+                                    <TrendingDown className="w-4 h-4 text-emerald-400" />
+                                </div>
+                                <span className="text-sm text-zinc-300 font-medium">Price History Tracking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Main Content */}
+            <div className="container-wide py-12">
                 <div className="flex gap-8">
                     {/* Sidebar - Compact */}
                     <aside className="hidden lg:block w-56 flex-shrink-0">
@@ -258,7 +299,7 @@ export function DealsPage() {
                     </aside>
 
                     {/* Deals Grid */}
-                    <main className="flex-1 min-w-0 space-y-10">
+                    <main className="flex-1 min-w-0 space-y-14">
                         {loading ? (
                             <DealGridSkeleton count={9} />
                         ) : (
@@ -275,7 +316,7 @@ export function DealsPage() {
                                                 View all <ArrowRight className="w-4 h-4" />
                                             </Link>
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                                             {hotDeals.slice(0, 6).map((deal, i) => (
                                                 <motion.div
                                                     key={deal.id}
