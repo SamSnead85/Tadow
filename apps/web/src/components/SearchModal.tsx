@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Search, Command, ArrowRight, Clock, TrendingUp, Zap } from 'lucide-react';
+import { Search, ArrowRight, Clock, TrendingUp, Zap } from 'lucide-react';
 
 interface SearchModalProps {
     isOpen: boolean;
@@ -144,8 +144,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                 key={item}
                                                 onClick={() => handleSearch(item)}
                                                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${selectedIndex === i
-                                                        ? 'bg-zinc-800 text-white'
-                                                        : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
+                                                    ? 'bg-zinc-800 text-white'
+                                                    : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
                                                     }`}
                                             >
                                                 <TrendingUp className="w-4 h-4" />
@@ -167,8 +167,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                     key={item}
                                                     onClick={() => handleSearch(item)}
                                                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${selectedIndex === i
-                                                            ? 'bg-zinc-800 text-white'
-                                                            : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
+                                                        ? 'bg-zinc-800 text-white'
+                                                        : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
                                                         }`}
                                                 >
                                                     <Clock className="w-4 h-4" />

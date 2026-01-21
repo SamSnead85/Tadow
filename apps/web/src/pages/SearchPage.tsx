@@ -58,7 +58,7 @@ export function SearchPage() {
     const [selectedMarketplaces, setSelectedMarketplaces] = useState<string[]>([]);
     const [selectedCondition, setSelectedCondition] = useState('All');
     const [sortBy, setSortBy] = useState('score');
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+    const [_priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [showFilters, setShowFilters] = useState(false);
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [quickViewDeal, setQuickViewDeal] = useState<Deal | null>(null);
@@ -124,7 +124,7 @@ export function SearchPage() {
         }
     };
 
-    const handleQuickView = (deal: Deal) => {
+    const handleQuickView = (deal: any) => {
         setQuickViewDeal(deal);
         setIsQuickViewOpen(true);
     };
@@ -234,8 +234,8 @@ export function SearchPage() {
                                             key={condition}
                                             onClick={() => setSelectedCondition(condition)}
                                             className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${selectedCondition === condition
-                                                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                                                    : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                                                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                                : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
                                                 }`}
                                         >
                                             {condition}

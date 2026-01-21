@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChatMessage } from './ChatMessage';
 import { questions, personaDescriptions } from './questions';
-import type { ChatMessage as ChatMessageType, QuestionnaireAnswers, Persona } from '@/types';
+import type { ChatMessage as ChatMessageType, QuestionnaireAnswers } from '@/types';
 import { determinePersona } from '@/utils/recommendations';
 
 export function ChatInterface() {

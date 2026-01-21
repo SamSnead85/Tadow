@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-    Search, Zap, TrendingDown, Flame, ArrowRight, Sparkles, Clock,
-    Eye, ChevronRight, Star, Shield, Bell, Target, BarChart3, ArrowUpRight
+    Search, Zap, TrendingDown, Flame, ArrowRight, Sparkles,
+    Eye, Shield, Bell, Target, BarChart3
 } from 'lucide-react';
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton, FilterSkeleton } from '../components/Skeleton';
@@ -130,7 +130,7 @@ export function DealsPage() {
         setSelectedMarketplaces(marketplaceIds);
     };
 
-    const handleQuickView = (deal: Deal) => {
+    const handleQuickView = (deal: any) => {
         setQuickViewDeal(deal);
         setIsQuickViewOpen(true);
     };

@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
-    Send, Sparkles, Bot, User, TrendingDown, Zap, Target,
-    ShoppingCart, BarChart3, Search, ArrowRight, Lightbulb
+    Send, Sparkles, Bot, User, TrendingDown, Target,
+    ShoppingCart, BarChart3, ArrowRight, Lightbulb
 } from 'lucide-react';
 
 interface Message {
@@ -183,8 +183,8 @@ export function HomePage() {
                                     >
                                         {/* Avatar */}
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${message.role === 'user'
-                                                ? 'bg-emerald-500/20'
-                                                : 'bg-gradient-to-br from-violet-500 to-indigo-600'
+                                            ? 'bg-emerald-500/20'
+                                            : 'bg-gradient-to-br from-violet-500 to-indigo-600'
                                             }`}>
                                             {message.role === 'user' ? (
                                                 <User className="w-5 h-5 text-emerald-400" />
@@ -196,8 +196,8 @@ export function HomePage() {
                                         {/* Content */}
                                         <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
                                             <div className={`inline-block p-4 rounded-2xl max-w-xl ${message.role === 'user'
-                                                    ? 'bg-emerald-500/10 border border-emerald-500/20 text-white'
-                                                    : 'bg-zinc-900 border border-zinc-800 text-zinc-300'
+                                                ? 'bg-emerald-500/10 border border-emerald-500/20 text-white'
+                                                : 'bg-zinc-900 border border-zinc-800 text-zinc-300'
                                                 }`}>
                                                 {message.content}
                                             </div>

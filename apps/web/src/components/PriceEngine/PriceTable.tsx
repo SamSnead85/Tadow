@@ -17,7 +17,7 @@ const retailerConfig: Record<string, { color: string; bgColor: string }> = {
     'Manufacturer': { color: '#374151', bgColor: 'bg-noir-50' },
 };
 
-export function PriceTable({ prices, productName }: PriceTableProps) {
+export function PriceTable({ prices, productName: _productName }: PriceTableProps) {
     // Sort by price, lowest first
     const sortedPrices = [...prices].sort((a, b) => a.price - b.price);
     const lowestPrice = sortedPrices[0]?.price;
