@@ -21,7 +21,46 @@ export default {
                     900: '#0c0c0f', // Deep dark
                     950: '#050507', // Near black
                 },
-                // Mint - Savings & Success Accent
+                // Tadow Gold - Primary Brand Color (excitement + trust)
+                tadow: {
+                    50: '#fdf8ef',
+                    100: '#f9efd9',
+                    200: '#f2ddb2',
+                    300: '#e9c580',
+                    400: '#dea94d', // Bright gold
+                    500: '#d4a857', // Primary gold
+                    600: '#c08b3a', // Rich gold
+                    700: '#9f6d2e',
+                    800: '#82572a',
+                    900: '#6b4826',
+                },
+                // Flame - Hot deals accent (excitement)
+                flame: {
+                    50: '#fff7ed',
+                    100: '#ffedd5',
+                    200: '#fed7aa',
+                    300: '#fdba74',
+                    400: '#fb923c', // Hot orange
+                    500: '#f97316', // Primary flame
+                    600: '#ea580c',
+                    700: '#c2410c',
+                    800: '#9a3412',
+                    900: '#7c2d12',
+                },
+                // Trust - Success/savings (reliability)
+                trust: {
+                    50: '#ecfdf5',
+                    100: '#d1fae5',
+                    200: '#a7f3d0',
+                    300: '#6ee7b7',
+                    400: '#34d399',
+                    500: '#10b981', // Primary success
+                    600: '#059669',
+                    700: '#047857',
+                    800: '#065f46',
+                    900: '#064e3b',
+                },
+                // Mint - Savings & Success Accent (legacy)
                 mint: {
                     50: '#ecfdf5',
                     100: '#d1fae5',
@@ -89,6 +128,8 @@ export default {
             boxShadow: {
                 'glass': '0 4px 24px rgba(0, 0, 0, 0.4)',
                 'glass-lg': '0 8px 40px rgba(0, 0, 0, 0.5)',
+                'glow-gold': '0 0 40px rgba(212, 168, 87, 0.2)',
+                'glow-flame': '0 0 40px rgba(249, 115, 22, 0.15)',
                 'glow-mint': '0 0 40px rgba(16, 185, 129, 0.15)',
                 'glow-electric': '0 0 40px rgba(14, 165, 233, 0.15)',
                 'card': '0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2)',

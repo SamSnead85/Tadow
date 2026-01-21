@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Zap, Menu, X, Sparkles, Command } from 'lucide-react';
+import { Search, Flame, Menu, X, Sparkles, Command } from 'lucide-react';
 import { SearchModal, useSearchModal } from './SearchModal';
 
 export function Layout() {
@@ -22,9 +22,9 @@ export function Layout() {
     };
 
     const navLinks = [
-        { path: '/', label: 'Deals', icon: null },
+        { path: '/', label: 'Deals', icon: Flame },
         { path: '/search', label: 'Search', icon: Search },
-        { path: '/assistant', label: 'AI Assistant', icon: Zap, isAI: true },
+        { path: '/assistant', label: 'AI Assistant', icon: Sparkles, isAI: true },
     ];
 
     return (
@@ -38,22 +38,24 @@ export function Layout() {
                         {/* Logo */}
                         <Link to="/" className="flex items-center gap-3 group">
                             <motion.div
-                                whileHover={{ scale: 1.05, rotate: 2 }}
+                                whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 className="relative"
                             >
-                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 blur-lg opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
-                                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/25 overflow-hidden">
-                                    <Zap className="w-6 h-6 text-zinc-900 fill-current" />
-                                </div>
+                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+                                <img
+                                    src="/favicon.png"
+                                    alt="Tadow"
+                                    className="relative w-10 h-10 rounded-xl shadow-lg shadow-amber-500/20"
+                                />
                             </motion.div>
 
                             <div className="flex flex-col">
-                                <span className="font-bold text-xl text-white tracking-tight group-hover:text-emerald-300 transition-colors">
+                                <span className="font-bold text-xl text-white tracking-tight group-hover:text-amber-400 transition-colors">
                                     Tadow
                                 </span>
                                 <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest -mt-0.5">
-                                    Deal Intelligence
+                                    Deals That Hit Different
                                 </span>
                             </div>
                         </Link>
@@ -69,7 +71,7 @@ export function Layout() {
                                         <motion.div
                                             whileHover={{ y: -1 }}
                                             className={`flex items-center gap-1.5 ${isActive
-                                                ? link.isAI ? 'text-violet-400' : 'text-emerald-400'
+                                                ? link.isAI ? 'text-violet-400' : 'text-amber-400'
                                                 : 'text-zinc-400 group-hover:text-white'
                                                 }`}
                                         >
@@ -200,21 +202,23 @@ export function Layout() {
                     <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
                         <div className="md:col-span-2">
                             <div className="flex items-center gap-3 mb-5">
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                                    <Zap className="w-6 h-6 text-zinc-900 fill-current" />
-                                </div>
+                                <img
+                                    src="/favicon.png"
+                                    alt="Tadow"
+                                    className="w-10 h-10 rounded-xl shadow-lg"
+                                />
                                 <div>
                                     <span className="font-bold text-xl text-white">Tadow</span>
                                     <span className="text-zinc-600 text-xs ml-2 font-mono">v1.0</span>
                                 </div>
                             </div>
                             <p className="text-zinc-400 text-sm leading-relaxed mb-5 max-w-xs">
-                                AI-powered deal intelligence platform. Find the best prices across
+                                AI-powered deal intelligence. Find deals that hit different across
                                 every marketplace—never overpay again.
                             </p>
-                            <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-lg w-fit">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                                <span className="text-emerald-400 text-xs font-medium">All systems operational</span>
+                            <div className="flex items-center gap-2 px-3 py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg w-fit">
+                                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                                <span className="text-amber-400 text-xs font-medium">All systems operational</span>
                             </div>
                         </div>
 
