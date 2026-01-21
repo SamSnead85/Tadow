@@ -11,7 +11,6 @@ import { WatchlistPage } from './pages/WatchlistPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { AccountPage } from './pages/AccountPage';
-import { AIAssistantPage } from './pages/AIAssistantPage';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import SellerDashboard from './pages/SellerDashboard';
 import CreateListing from './pages/CreateListing';
@@ -25,6 +24,7 @@ import ProfilePage from './pages/ProfilePage';
 import NotificationsPage from './pages/NotificationsPage';
 import DiscoverPage from './pages/DiscoverPage';
 import SavedSearchesPage from './pages/SavedSearchesPage';
+import AIAssistantPage from './pages/AIAssistantPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -93,6 +93,7 @@ function App() {
                         <Route path="notifications" element={<AnimatedPage><NotificationsPage /></AnimatedPage>} />
                         <Route path="discover" element={<AnimatedPage><DiscoverPage /></AnimatedPage>} />
                         <Route path="saved-searches" element={<AnimatedPage><SavedSearchesPage /></AnimatedPage>} />
+                        <Route path="ai-assistant" element={<AnimatedPage><AIAssistantPage /></AnimatedPage>} />
 
                         {/* Legacy Routes */}
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />

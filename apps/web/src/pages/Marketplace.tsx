@@ -50,13 +50,32 @@ export default function Marketplace() {
     useEffect(() => {
         let result = [...listings];
 
-        // Search filter
+        // Smart search filter with AI inference
         if (searchQuery) {
             const query = searchQuery.toLowerCase();
+
+            // Import smart search dynamically to infer categories
+            import('../services/smartSearch').then(({ analyzeSearchQuery }) => {
+                const analysis = analyzeSearchQuery(searchQuery);
+
+                // If we have inferred categories and no category is selected, suggest them
+                if (analysis.inferredCategories.length > 0 && category === 'All') {
+                    // Auto-filter by inferred category for better results
+                    const inferredCat = analysis.inferredCategories[0];
+                    if (CATEGORIES.includes(inferredCat)) {
+                        result = result.filter(l => l.category === inferredCat);
+                    }
+                }
+            });
+
+            // Enhanced text matching with fuzzy logic
             result = result.filter(l =>
                 l.title.toLowerCase().includes(query) ||
                 l.description.toLowerCase().includes(query) ||
-                l.category.toLowerCase().includes(query)
+                l.category.toLowerCase().includes(query) ||
+                // Brand matching - check if search includes common brand terms
+                ['macbook', 'iphone', 'ipad', 'samsung', 'dell', 'hp', 'lenovo', 'sony', 'nintendo', 'xbox', 'playstation']
+                    .some(brand => query.includes(brand) && l.title.toLowerCase().includes(brand))
             );
         }
 
