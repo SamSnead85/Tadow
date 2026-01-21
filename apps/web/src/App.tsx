@@ -11,6 +11,7 @@ import { DealDetailPage } from './pages/DealDetailPage';
 import { WatchlistPage } from './pages/WatchlistPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CategoryPage } from './pages/CategoryPage';
+import { AccountPage } from './pages/AccountPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -67,7 +68,7 @@ function App() {
                         <Route path="how-it-works" element={<AnimatedPage><HowItWorksPage /></AnimatedPage>} />
                         <Route path="results" element={<AnimatedPage><ResultsPage /></AnimatedPage>} />
                         <Route path="product/:id" element={<AnimatedPage><ProductPage /></AnimatedPage>} />
-                        <Route path="account" element={<AnimatedPage><DealsPage /></AnimatedPage>} />
+                        <Route path="account" element={<AnimatedPage><AccountPage /></AnimatedPage>} />
 
                         {/* 404 Catch All */}
                         <Route path="*" element={<AnimatedPage><NotFoundPage /></AnimatedPage>} />
