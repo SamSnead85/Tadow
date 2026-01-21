@@ -8,6 +8,7 @@ import {
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton, FilterSkeleton } from '../components/Skeleton';
 import { DealOfTheDay, TrendingCarousel } from '../components/FeaturedDeals';
+import { PriceInsightsBar } from '../components/PriceIntelligence';
 
 interface Deal {
     id: string;
@@ -355,6 +356,14 @@ export function DealsPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Price Insights Bar */}
+            <PriceInsightsBar
+                avgDiscount={allDeals.length > 0 ? Math.round(allDeals.reduce((acc, d) => acc + (d.discountPercent || 0), 0) / allDeals.length) : 25}
+                allTimeLowCount={allDeals.filter(d => d.isAllTimeLow).length || 8}
+                priceDropCount={allDeals.filter(d => d.pricePrediction === 'falling').length || 12}
+                totalDeals={allDeals.length || 28}
+            />
 
             {/* Main Content */}
             <div className="container-wide py-10">

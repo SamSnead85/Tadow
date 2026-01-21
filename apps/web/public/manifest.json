@@ -1,0 +1,54 @@
+{
+    "name": "Tadow",
+    "short_name": "Tadow",
+    "description": "AI-Powered Deal Intelligence - Find the Best Tech Deals",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0f",
+    "theme_color": "#D4A857",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "categories": [
+        "shopping",
+        "lifestyle",
+        "utilities"
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Browse Deals",
+            "short_name": "Deals",
+            "url": "/deals",
+            "icons": [
+                {
+                    "src": "/favicon.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Search",
+            "short_name": "Search",
+            "url": "/search",
+            "icons": [
+                {
+                    "src": "/favicon.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}
