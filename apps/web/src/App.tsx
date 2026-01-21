@@ -21,6 +21,8 @@ import Marketplace from './pages/Marketplace';
 import ListingDetail from './pages/ListingDetail';
 import MessagesPage from './pages/MessagesPage';
 import OrdersPage from './pages/OrdersPage';
+import ProfilePage from './pages/ProfilePage';
+import NotificationsPage from './pages/NotificationsPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -85,6 +87,8 @@ function App() {
                         <Route path="listing/:id" element={<AnimatedPage><ListingDetail /></AnimatedPage>} />
                         <Route path="messages" element={<AnimatedPage><MessagesPage /></AnimatedPage>} />
                         <Route path="orders" element={<AnimatedPage><OrdersPage /></AnimatedPage>} />
+                        <Route path="profile/:userId" element={<AnimatedPage><ProfilePage /></AnimatedPage>} />
+                        <Route path="notifications" element={<AnimatedPage><NotificationsPage /></AnimatedPage>} />
 
                         {/* Legacy Routes */}
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />
