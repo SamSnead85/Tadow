@@ -1,15 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Flame, Menu, X, Sparkles, Command } from 'lucide-react';
+import { Search, Flame, Menu, X, Sparkles, Command, User } from 'lucide-react';
 import { SearchModal, useSearchModal } from './SearchModal';
 import { MobileNav, MobileNavSpacer } from './MobileNav';
+import { AuthModal } from './AuthModal';
+
+interface TadowUser {
+    email: string;
+    name: string;
+    signedIn: boolean;
+}
 
 export function Layout() {
     const location = useLocation();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const searchModal = useSearchModal();
     const [scrolled, setScrolled] = useState(false);
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [user, setUser] = useState<TadowUser | null>(null);
+
+    // Check for existing session
+    useEffect(() => {
+        const stored = localStorage.getItem('tadow_user');
+        if (stored) {
+            setUser(JSON.parse(stored));
+        }
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -31,6 +48,7 @@ export function Layout() {
     return (
         <div className="min-h-screen bg-zinc-950">
             <SearchModal isOpen={searchModal.isOpen} onClose={searchModal.close} />
+            <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
 
             {/* Navigation */}
             <nav className={`nav-glass ${scrolled ? 'shadow-xl shadow-black/20' : ''}`}>
@@ -109,15 +127,31 @@ export function Layout() {
                                 </kbd>
                             </motion.button>
 
-                            <button className="btn-ghost text-sm">Sign In</button>
-
-                            <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="btn-primary"
-                            >
-                                Get Started
-                            </motion.button>
+                            {user ? (
+                                <Link to="/account" className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors">
+                                    <div className="w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center">
+                                        <User className="w-4 h-4 text-amber-400" />
+                                    </div>
+                                    <span className="text-sm text-white">{user.name}</span>
+                                </Link>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={() => setAuthModalOpen(true)}
+                                        className="btn-ghost text-sm"
+                                    >
+                                        Sign In
+                                    </button>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => setAuthModalOpen(true)}
+                                        className="btn-primary"
+                                    >
+                                        Get Started
+                                    </motion.button>
+                                </>
+                            )}
                         </div>
 
                         <button

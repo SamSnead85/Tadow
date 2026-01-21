@@ -3,10 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Heart, Trash2, ExternalLink, TrendingDown, Clock, Bell, ArrowRight } from 'lucide-react';
 import { getWatchlist, removeFromWatchlist, WatchlistItem } from '../utils/storage';
+import { PriceAlertModal } from '../components/PriceAlertModal';
 
 export function WatchlistPage() {
     const [watchlist, setWatchlist] = useState<WatchlistItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedDeal, setSelectedDeal] = useState<WatchlistItem | null>(null);
+    const [alertModalOpen, setAlertModalOpen] = useState(false);
 
     useEffect(() => {
         const items = getWatchlist();
@@ -19,6 +22,11 @@ export function WatchlistPage() {
         setWatchlist(prev => prev.filter(item => item.dealId !== dealId));
     };
 
+    const openAlertModal = (item: WatchlistItem) => {
+        setSelectedDeal(item);
+        setAlertModalOpen(true);
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
@@ -29,6 +37,20 @@ export function WatchlistPage() {
 
     return (
         <div className="min-h-screen bg-zinc-950 py-8">
+            {/* Price Alert Modal */}
+            {selectedDeal && (
+                <PriceAlertModal
+                    isOpen={alertModalOpen}
+                    onClose={() => setAlertModalOpen(false)}
+                    deal={{
+                        id: selectedDeal.dealId,
+                        title: selectedDeal.title,
+                        currentPrice: selectedDeal.currentPrice,
+                        imageUrl: selectedDeal.imageUrl,
+                    }}
+                />
+            )}
+
             <div className="container-wide">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
@@ -42,10 +64,7 @@ export function WatchlistPage() {
                     </div>
 
                     {watchlist.length > 0 && (
-                        <Link
-                            to="/deals"
-                            className="btn-primary"
-                        >
+                        <Link to="/deals" className="btn-primary">
                             Browse More Deals
                             <ArrowRight className="w-4 h-4" />
                         </Link>
@@ -88,35 +107,22 @@ export function WatchlistPage() {
                                     className="deal-card p-4"
                                 >
                                     <div className="flex gap-4">
-                                        {/* Image */}
                                         <div className="w-24 h-24 rounded-xl bg-zinc-800 overflow-hidden flex-shrink-0">
                                             {item.imageUrl ? (
-                                                <img
-                                                    src={item.imageUrl}
-                                                    alt={item.title}
-                                                    className="w-full h-full object-cover"
-                                                />
+                                                <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center">
                                                     <Heart className="w-8 h-8 text-zinc-600" />
                                                 </div>
                                             )}
                                         </div>
-
-                                        {/* Content */}
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="font-medium text-white line-clamp-2 mb-2">
-                                                {item.title}
-                                            </h3>
+                                            <h3 className="font-medium text-white line-clamp-2 mb-2">{item.title}</h3>
                                             <div className="flex items-baseline gap-2 mb-2">
-                                                <span className="text-xl font-bold text-white">
-                                                    ${item.currentPrice.toLocaleString()}
-                                                </span>
+                                                <span className="text-xl font-bold text-white">${item.currentPrice.toLocaleString()}</span>
                                             </div>
                                             <div className="flex items-center gap-2 text-xs text-zinc-500">
-                                                <span className="px-2 py-0.5 bg-zinc-800 rounded">
-                                                    {item.marketplace}
-                                                </span>
+                                                <span className="px-2 py-0.5 bg-zinc-800 rounded">{item.marketplace}</span>
                                                 <span className="flex items-center gap-1">
                                                     <Clock className="w-3 h-3" />
                                                     {new Date(item.savedAt).toLocaleDateString()}
@@ -125,17 +131,14 @@ export function WatchlistPage() {
                                         </div>
                                     </div>
 
-                                    {/* Actions */}
                                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-zinc-800">
-                                        <Link
-                                            to={`/deal/${item.dealId}`}
-                                            className="btn-secondary text-sm"
-                                        >
+                                        <Link to={`/deal/${item.dealId}`} className="btn-secondary text-sm">
                                             <ExternalLink className="w-3 h-3" />
                                             View Deal
                                         </Link>
                                         <div className="flex items-center gap-2">
                                             <button
+                                                onClick={() => openAlertModal(item)}
                                                 className="p-2 text-zinc-500 hover:text-amber-400 transition-colors"
                                                 title="Set Price Alert"
                                             >
