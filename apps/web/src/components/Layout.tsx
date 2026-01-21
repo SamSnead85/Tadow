@@ -94,15 +94,15 @@ export function Layout() {
                                 </span>
                             </Link>
 
-                            {/* Search Bar - Prominent, Amazon-style */}
-                            <form onSubmit={handleSearch} className="flex-1 max-w-3xl">
-                                <div className="flex items-stretch h-11 rounded-lg overflow-hidden border-2 border-transparent focus-within:border-amber-500 transition-colors">
+                            {/* Search Bar - Large & Centered */}
+                            <form onSubmit={handleSearch} className="flex-1 max-w-4xl mx-auto">
+                                <div className="flex items-stretch h-12 rounded-lg overflow-hidden border-2 border-zinc-700 focus-within:border-amber-500 transition-colors shadow-lg shadow-black/20">
                                     {/* Category Dropdown */}
                                     <div className="relative hidden sm:block">
                                         <select
                                             value={searchCategory}
                                             onChange={(e) => setSearchCategory(e.target.value)}
-                                            className="h-full px-3 pr-8 bg-zinc-700 text-zinc-300 text-sm border-r border-zinc-600 cursor-pointer focus:outline-none appearance-none"
+                                            className="h-full px-4 pr-9 bg-zinc-700 text-zinc-200 text-sm border-r border-zinc-600 cursor-pointer focus:outline-none appearance-none font-medium"
                                         >
                                             {categories.map(cat => (
                                                 <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -116,14 +116,14 @@ export function Layout() {
                                         type="text"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Search deals..."
-                                        className="flex-1 px-4 bg-zinc-800 text-white placeholder:text-zinc-500 focus:outline-none text-base"
+                                        placeholder="Search for laptops, phones, gaming gear..."
+                                        className="flex-1 px-5 bg-zinc-800 text-white placeholder:text-zinc-500 focus:outline-none text-base font-medium"
                                     />
 
                                     {/* Search Button */}
                                     <button
                                         type="submit"
-                                        className="px-5 bg-amber-500 hover:bg-amber-400 text-zinc-900 transition-colors"
+                                        className="px-6 bg-amber-500 hover:bg-amber-400 text-zinc-900 font-semibold transition-colors"
                                     >
                                         <Search className="w-5 h-5" />
                                     </button>
