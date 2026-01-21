@@ -13,6 +13,9 @@ import { CategoryPage } from './pages/CategoryPage';
 import { AccountPage } from './pages/AccountPage';
 import { AIAssistantPage } from './pages/AIAssistantPage';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
+import SellerDashboard from './pages/SellerDashboard';
+import CreateListing from './pages/CreateListing';
+import Checkout from './pages/Checkout';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -67,6 +70,11 @@ function App() {
                         <Route path="ai" element={<AnimatedPage><AIAssistantPage /></AnimatedPage>} />
                         <Route path="account" element={<AnimatedPage><AccountPage /></AnimatedPage>} />
                         <Route path="analytics" element={<AnimatedPage><AnalyticsDashboard /></AnimatedPage>} />
+
+                        {/* P2P Marketplace */}
+                        <Route path="sell" element={<AnimatedPage><SellerDashboard /></AnimatedPage>} />
+                        <Route path="sell/create" element={<AnimatedPage><CreateListing /></AnimatedPage>} />
+                        <Route path="checkout/:listingId" element={<AnimatedPage><Checkout /></AnimatedPage>} />
 
                         {/* Legacy Routes */}
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />
