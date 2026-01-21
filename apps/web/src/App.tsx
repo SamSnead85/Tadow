@@ -17,6 +17,10 @@ import SellerDashboard from './pages/SellerDashboard';
 import CreateListing from './pages/CreateListing';
 import Checkout from './pages/Checkout';
 import LocalDeals from './pages/LocalDeals';
+import Marketplace from './pages/Marketplace';
+import ListingDetail from './pages/ListingDetail';
+import MessagesPage from './pages/MessagesPage';
+import OrdersPage from './pages/OrdersPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -77,6 +81,10 @@ function App() {
                         <Route path="sell/create" element={<AnimatedPage><CreateListing /></AnimatedPage>} />
                         <Route path="checkout/:listingId" element={<AnimatedPage><Checkout /></AnimatedPage>} />
                         <Route path="local" element={<AnimatedPage><LocalDeals /></AnimatedPage>} />
+                        <Route path="marketplace" element={<AnimatedPage><Marketplace /></AnimatedPage>} />
+                        <Route path="listing/:id" element={<AnimatedPage><ListingDetail /></AnimatedPage>} />
+                        <Route path="messages" element={<AnimatedPage><MessagesPage /></AnimatedPage>} />
+                        <Route path="orders" element={<AnimatedPage><OrdersPage /></AnimatedPage>} />
 
                         {/* Legacy Routes */}
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />

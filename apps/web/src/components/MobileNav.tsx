@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Search, Heart, User, Sparkles } from 'lucide-react';
+import { Home, Search, Heart, User, Store, MapPin } from 'lucide-react';
 import { getWatchlist } from '../utils/storage';
 
 const navItems = [
     { to: '/deals', icon: Home, label: 'Home' },
     { to: '/search', icon: Search, label: 'Search' },
+    { to: '/sell', icon: Store, label: 'Sell' },
+    { to: '/local', icon: MapPin, label: 'Local' },
     { to: '/watchlist', icon: Heart, label: 'Saved', showBadge: true },
-    { to: '/ai', icon: Sparkles, label: 'AI' },
     { to: '/account', icon: User, label: 'Account' },
 ];
 
@@ -42,8 +43,8 @@ export function MobileNav() {
                             <motion.div
                                 whileTap={{ scale: 0.9 }}
                                 className={`relative p-2 rounded-xl transition-colors ${isActive
-                                        ? 'bg-amber-500/20 text-amber-400'
-                                        : 'text-zinc-500 hover:text-white'
+                                    ? 'bg-amber-500/20 text-amber-400'
+                                    : 'text-zinc-500 hover:text-white'
                                     }`}
                             >
                                 <Icon className="w-5 h-5" />

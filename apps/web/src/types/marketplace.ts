@@ -71,7 +71,8 @@ export interface Listing {
     condition: ListingCondition;
     images: string[];
     price: number;
-    originalRetailPrice?: number;
+    originalPrice?: number; // Used for discount display
+    originalRetailPrice?: number; // MSRP
     pricingType: PricingType;
     minimumOffer?: number;
     shipping: {
@@ -92,12 +93,16 @@ export interface Listing {
     updatedAt: Date;
     expiresAt?: Date;
     aiVerification?: {
-        imageAuthenticity: number; // 0-100
-        priceReasonableness: number;
-        descriptionQuality: number;
-        overallScore: number;
+        approved: boolean;
+        score: number; // 0-100 overall
+        imageAuthenticity?: number;
+        priceReasonableness?: number;
+        descriptionQuality?: number;
+        overallScore?: number;
         flags: string[];
+        suggestions?: string[];
     };
+    favorites?: number; // Alias for saves
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

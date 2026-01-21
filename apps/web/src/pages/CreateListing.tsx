@@ -77,6 +77,8 @@ export default function CreateListing() {
             updatedAt: new Date(),
             status: 'active',
             aiVerification: {
+                approved: verification.overallScore >= 70,
+                score: verification.overallScore,
                 imageAuthenticity: verification.imageAuthenticity,
                 priceReasonableness: verification.priceReasonableness,
                 descriptionQuality: verification.descriptionQuality,
