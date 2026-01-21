@@ -26,6 +26,44 @@ export interface ShowcaseDeal {
     sellerReviews: number;
     isVerifiedSeller: boolean;
     marketplace: { id: string; name: string; color: string; };
+    // NEW: Purchase and specs fields (optional for backward compatibility)
+    productUrl?: string;
+    specs?: {
+        ram?: string;
+        storage?: string;
+        screenSize?: string;
+        processor?: string;
+        battery?: string;
+        weight?: string;
+        resolution?: string;
+        [key: string]: string | undefined;
+    };
+}
+
+// Helper to generate purchase URLs based on marketplace and product title
+export function getProductUrl(deal: ShowcaseDeal): string {
+    if (deal.productUrl) return deal.productUrl;
+
+    const searchTitle = encodeURIComponent(deal.title);
+
+    switch (deal.marketplace.id) {
+        case 'amazon':
+            return `https://www.amazon.com/s?k=${searchTitle}&tag=tadow-20`;
+        case 'bestbuy':
+            return `https://www.bestbuy.com/site/searchpage.jsp?st=${searchTitle}`;
+        case 'walmart':
+            return `https://www.walmart.com/search?q=${searchTitle}`;
+        case 'newegg':
+            return `https://www.newegg.com/p/pl?d=${searchTitle}`;
+        case 'dell':
+            return `https://www.dell.com/en-us/search/${searchTitle}`;
+        case 'apple':
+            return `https://www.apple.com/shop/buy-${deal.category.toLowerCase()}`;
+        case 'homedepot':
+            return `https://www.homedepot.com/s/${searchTitle}`;
+        default:
+            return `https://www.google.com/search?q=${searchTitle}+buy`;
+    }
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
