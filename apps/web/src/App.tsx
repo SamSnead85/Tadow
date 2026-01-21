@@ -23,6 +23,8 @@ import MessagesPage from './pages/MessagesPage';
 import OrdersPage from './pages/OrdersPage';
 import ProfilePage from './pages/ProfilePage';
 import NotificationsPage from './pages/NotificationsPage';
+import DiscoverPage from './pages/DiscoverPage';
+import SavedSearchesPage from './pages/SavedSearchesPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -89,6 +91,8 @@ function App() {
                         <Route path="orders" element={<AnimatedPage><OrdersPage /></AnimatedPage>} />
                         <Route path="profile/:userId" element={<AnimatedPage><ProfilePage /></AnimatedPage>} />
                         <Route path="notifications" element={<AnimatedPage><NotificationsPage /></AnimatedPage>} />
+                        <Route path="discover" element={<AnimatedPage><DiscoverPage /></AnimatedPage>} />
+                        <Route path="saved-searches" element={<AnimatedPage><SavedSearchesPage /></AnimatedPage>} />
 
                         {/* Legacy Routes */}
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />
