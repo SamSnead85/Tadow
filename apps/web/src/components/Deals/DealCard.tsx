@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, Flame, CheckCircle, TrendingDown, Heart, Eye, Share2, Zap, Star } from 'lucide-react';
+import { MapPin, Clock, Flame, CheckCircle, TrendingDown, TrendingUp, Heart, Eye, Share2, Zap, Star, Minus } from 'lucide-react';
 import { DealScore } from './DealScore';
 
 interface Deal {
@@ -18,6 +18,8 @@ interface Deal {
     dealScore?: number;
     aiVerdict?: string;
     priceVsAverage?: number;
+    pricePrediction?: 'rising' | 'falling' | 'stable';
+    priceHistory?: number[];
     isHot?: boolean;
     isFeatured?: boolean;
     isAllTimeLow?: boolean;
@@ -249,6 +251,30 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
                             <span className="text-sm text-zinc-500 line-through">${deal.originalPrice.toLocaleString()}</span>
                         )}
                     </div>
+
+                    {/* Price Prediction */}
+                    {deal.pricePrediction && (
+                        <div className="flex items-center gap-2 mb-3">
+                            {deal.pricePrediction === 'rising' && (
+                                <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-red-500/20 border border-red-500/30 rounded-full">
+                                    <TrendingUp className="w-3 h-3 text-red-400" />
+                                    <span className="text-xs font-medium text-red-400">Buy Now</span>
+                                </span>
+                            )}
+                            {deal.pricePrediction === 'falling' && (
+                                <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-full">
+                                    <TrendingDown className="w-3 h-3 text-emerald-400" />
+                                    <span className="text-xs font-medium text-emerald-400">Wait</span>
+                                </span>
+                            )}
+                            {deal.pricePrediction === 'stable' && (
+                                <span className="inline-flex items-center gap-1.5 px-2 py-1 bg-zinc-500/20 border border-zinc-500/30 rounded-full">
+                                    <Minus className="w-3 h-3 text-zinc-400" />
+                                    <span className="text-xs font-medium text-zinc-400">Stable</span>
+                                </span>
+                            )}
+                        </div>
+                    )}
 
                     {/* Footer */}
                     <div className="flex items-center justify-between text-xs text-zinc-500">

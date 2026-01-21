@@ -4,7 +4,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { Search, SlidersHorizontal, X, TrendingDown, Sparkles, Grid, List, ArrowUpDown, Trophy, Flame, ArrowRight } from 'lucide-react';
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton } from '../components/Skeleton';
-import { showcaseDeals, collections, dealCategories } from '../data/showcaseDeals';
+import { collections, dealCategories } from '../data/showcaseDeals';
 
 interface Deal {
     id: string;

@@ -26,7 +26,7 @@ interface Deal {
     isHot: boolean;
     isFeatured: boolean;
     isAllTimeLow: boolean;
-    pricePrediction: string;
+    pricePrediction?: 'rising' | 'falling' | 'stable';
     fakeReviewRisk: number;
     reviewQualityScore: number;
     city: string;

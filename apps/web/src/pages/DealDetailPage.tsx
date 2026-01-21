@@ -29,7 +29,7 @@ interface Deal {
     isAllTimeLow: boolean;
     allTimeLowPrice: number;
     historicHighPrice: number;
-    pricePrediction: string;
+    pricePrediction?: 'rising' | 'falling' | 'stable';
     priceDropPercent30d: number;
     fakeReviewRisk: number;
     reviewQualityScore: number;
@@ -133,7 +133,7 @@ export function DealDetailPage() {
         );
     }
 
-    const prediction = getPredictionBadge(deal.pricePrediction);
+    const prediction = getPredictionBadge(deal.pricePrediction || 'stable');
     const reviewRisk = getReviewRiskBadge(deal.fakeReviewRisk);
 
     return (
@@ -428,7 +428,7 @@ export function DealDetailPage() {
                         <h2 className="text-xl font-semibold text-white mb-6">Similar Deals</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             {similarDeals.slice(0, 4).map((deal) => (
-                                <DealCard key={deal.id} deal={deal} variant="compact" />
+                                <DealCard key={deal.id} deal={deal as any} variant="compact" />
                             ))}
                         </div>
                     </section>
