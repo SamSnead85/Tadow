@@ -106,6 +106,9 @@ export function DealsPage() {
 
     const fetchData = async () => {
         try {
+            // Dynamic import for demo deals fallback
+            const { DEMO_DEALS, getHotDeals } = await import('../data/demoDeals');
+
             // Helper to normalize deal data from API to component format
             const normalizeDeal = (deal: any) => ({
                 ...deal,
@@ -119,24 +122,66 @@ export function DealsPage() {
                 marketplace: deal.marketplace || { name: deal.source || 'Unknown', color: '#888' },
             });
 
-            const hotRes = await fetch('/api/deals/hot');
-            const hotData = await hotRes.json();
-            setHotDeals((hotData.deals || hotData || []).map(normalizeDeal));
+            try {
+                const hotRes = await fetch('/api/deals/hot');
+                if (hotRes.ok) {
+                    const hotData = await hotRes.json();
+                    setHotDeals((hotData.deals || hotData || []).map(normalizeDeal));
+                } else {
+                    throw new Error('API unavailable');
+                }
+            } catch {
+                // Fallback to demo deals
+                setHotDeals(getHotDeals(6) as Deal[]);
+            }
 
-            let dealsUrl = '/api/deals?limit=20';
-            if (selectedCategory) dealsUrl += `&category=${selectedCategory}`;
-            if (selectedMarketplaces.length) dealsUrl += `&marketplaces=${selectedMarketplaces.join(',')}`;
-            const dealsRes = await fetch(dealsUrl);
-            const dealsData = await dealsRes.json();
-            setAllDeals((dealsData.deals || []).map(normalizeDeal));
+            try {
+                let dealsUrl = '/api/deals?limit=20';
+                if (selectedCategory) dealsUrl += `&category=${selectedCategory}`;
+                if (selectedMarketplaces.length) dealsUrl += `&marketplaces=${selectedMarketplaces.join(',')}`;
+                const dealsRes = await fetch(dealsUrl);
+                if (dealsRes.ok) {
+                    const dealsData = await dealsRes.json();
+                    setAllDeals((dealsData.deals || []).map(normalizeDeal));
+                } else {
+                    throw new Error('API unavailable');
+                }
+            } catch {
+                // Fallback to demo deals, optionally filtered by category
+                let deals = [...DEMO_DEALS];
+                if (selectedCategory) {
+                    deals = deals.filter(d => d.category === selectedCategory);
+                }
+                setAllDeals(deals as Deal[]);
+            }
 
-            const mpRes = await fetch('/api/marketplaces');
-            const mpData = await mpRes.json();
-            setMarketplaces(mpData);
+            try {
+                const mpRes = await fetch('/api/marketplaces');
+                const mpData = await mpRes.json();
+                setMarketplaces(mpData);
+            } catch {
+                // Fallback marketplaces
+                setMarketplaces([
+                    { id: 'amazon', name: 'Amazon', color: '#FF9900', _count: { deals: 5 } },
+                    { id: 'bestbuy', name: 'Best Buy', color: '#0046BE', _count: { deals: 3 } },
+                    { id: 'apple', name: 'Apple', color: '#555555', _count: { deals: 3 } },
+                ]);
+            }
 
-            const catRes = await fetch('/api/categories');
-            const catData = await catRes.json();
-            setCategories(catData.filter((c: Category) => techCategories.includes(c.name)));
+            try {
+                const catRes = await fetch('/api/categories');
+                const catData = await catRes.json();
+                setCategories(catData.filter((c: Category) => techCategories.includes(c.name)));
+            } catch {
+                // Fallback categories
+                setCategories([
+                    { id: 'laptops', name: 'Laptops', slug: 'laptops', icon: '💻' },
+                    { id: 'phones', name: 'Phones', slug: 'phones', icon: '📱' },
+                    { id: 'gaming', name: 'Gaming', slug: 'gaming', icon: '🎮' },
+                    { id: 'audio', name: 'Audio', slug: 'audio', icon: '🎧' },
+                    { id: 'tvs', name: 'TVs', slug: 'tvs', icon: '📺' },
+                ]);
+            }
 
             setLoading(false);
         } catch (error) {

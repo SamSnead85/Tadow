@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Heart, Share2, Bell, MapPin, Star, Shield, Zap, TrendingDown, Eye, Bookmark, ChevronRight } from 'lucide-react';
 import { DealScore, DealCard, PriceHistoryChart } from '../components/Deals';
 import { Skeleton } from '../components/Skeleton';
+import { getDealById, getSimilarDeals, DEMO_DEALS } from '../data/demoDeals';
 
 interface PriceHistoryPoint {
     price: number;
@@ -69,12 +70,29 @@ export function DealDetailPage() {
     const fetchDeal = async () => {
         setLoading(true);
         try {
+            // Try API first
             const res = await fetch(`/api/deals/${id}`);
-            const data = await res.json();
-            setDeal(data.deal);
-            setSimilarDeals(data.similarDeals || []);
+            if (res.ok) {
+                const data = await res.json();
+                setDeal(data.deal);
+                setSimilarDeals(data.similarDeals || []);
+            } else {
+                throw new Error('API not available');
+            }
         } catch (error) {
-            console.error('Error fetching deal:', error);
+            // Fallback to demo deals
+            const demoDeal = getDealById(id || '');
+            if (demoDeal) {
+                setDeal(demoDeal as Deal);
+                setSimilarDeals(getSimilarDeals(demoDeal) as Deal[]);
+            } else {
+                // Try partial ID match for demo deals
+                const partialMatch = DEMO_DEALS.find(d => d.id.includes(id || '') || id?.includes(d.id.split('_')[1] || ''));
+                if (partialMatch) {
+                    setDeal(partialMatch as Deal);
+                    setSimilarDeals(getSimilarDeals(partialMatch) as Deal[]);
+                }
+            }
         }
         setLoading(false);
     };
