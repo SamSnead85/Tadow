@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     Search, Zap, TrendingDown, Flame, ArrowRight, Sparkles,
-    Eye, Shield, Bell, Target, BarChart3
+    Eye, Shield, Bell, Target, BarChart3, ArrowUpDown, Grid, List
 } from 'lucide-react';
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton, FilterSkeleton } from '../components/Skeleton';
@@ -53,6 +53,15 @@ interface Category {
 
 const techCategories = ['Electronics', 'Laptops', 'Phones', 'TVs', 'Gaming'];
 
+const sortOptions = [
+    { value: 'score', label: 'Best Score' },
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+    { value: 'discount', label: 'Biggest Discount' },
+    { value: 'recent', label: 'Most Recent' },
+    { value: 'category', label: 'By Category' },
+];
+
 const aiInsights = [
     { icon: Target, label: 'Best Time to Buy', value: 'Now', color: 'text-emerald-400' },
     { icon: BarChart3, label: 'Market Trend', value: '↓ Prices Dropping', color: 'text-sky-400' },
@@ -69,6 +78,8 @@ export function DealsPage() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedMarketplaces, setSelectedMarketplaces] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [sortBy, setSortBy] = useState('score');
+    const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [loading, setLoading] = useState(true);
     const [quickViewDeal, setQuickViewDeal] = useState<Deal | null>(null);
     const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
@@ -135,7 +146,28 @@ export function DealsPage() {
         setIsQuickViewOpen(true);
     };
 
-    const allTimeLowDeals = allDeals.filter(d => d.isAllTimeLow);
+    // Sort deals based on selected sort option
+    const sortDeals = (deals: Deal[]) => {
+        const sorted = [...deals];
+        switch (sortBy) {
+            case 'price-low':
+                return sorted.sort((a, b) => a.currentPrice - b.currentPrice);
+            case 'price-high':
+                return sorted.sort((a, b) => b.currentPrice - a.currentPrice);
+            case 'discount':
+                return sorted.sort((a, b) => (b.originalPrice - b.currentPrice) - (a.originalPrice - a.currentPrice));
+            case 'recent':
+                return sorted.sort((a, b) => new Date(b.id).getTime() - new Date(a.id).getTime());
+            case 'category':
+                return sorted.sort((a, b) => a.category.localeCompare(b.category));
+            case 'score':
+            default:
+                return sorted.sort((a, b) => (b.dealScore || 0) - (a.dealScore || 0));
+        }
+    };
+
+    const sortedDeals = sortDeals(allDeals);
+    const allTimeLowDeals = sortedDeals.filter(d => d.isAllTimeLow);
     const featuredDeals = allDeals.filter(d => d.isFeatured).slice(0, 1);
     const totalSavings = allDeals.reduce((acc, d) => acc + (d.originalPrice - d.currentPrice), 0);
 
@@ -447,19 +479,61 @@ export function DealsPage() {
                                                 <h2 className="text-xl font-bold text-white">
                                                     {selectedCategory || 'All Tech'} Deals
                                                 </h2>
-                                                <p className="text-zinc-500 text-sm">{allDeals.length} results found</p>
+                                                <p className="text-zinc-500 text-sm">{sortedDeals.length} results found</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Sort & View Controls */}
+                                        <div className="flex items-center gap-3">
+                                            {/* Sort Dropdown */}
+                                            <div className="relative">
+                                                <select
+                                                    value={sortBy}
+                                                    onChange={(e) => setSortBy(e.target.value)}
+                                                    className="appearance-none pl-3 pr-8 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white cursor-pointer focus:outline-none focus:border-emerald-500/50 hover:bg-zinc-700 transition-colors"
+                                                >
+                                                    {sortOptions.map(opt => (
+                                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                                    ))}
+                                                </select>
+                                                <ArrowUpDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 pointer-events-none" />
+                                            </div>
+
+                                            {/* View Toggle */}
+                                            <div className="flex items-center bg-zinc-800 rounded-lg p-1">
+                                                <button
+                                                    onClick={() => setViewMode('grid')}
+                                                    className={`p-2 rounded-md transition-colors ${viewMode === 'grid' ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-white'}`}
+                                                    title="Grid view"
+                                                >
+                                                    <Grid className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => setViewMode('list')}
+                                                    className={`p-2 rounded-md transition-colors ${viewMode === 'list' ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-white'}`}
+                                                    title="List view"
+                                                >
+                                                    <List className="w-4 h-4" />
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-                                        {allDeals.map((deal, i) => (
+                                    <div className={viewMode === 'grid'
+                                        ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"
+                                        : "space-y-4"
+                                    }>
+                                        {sortedDeals.map((deal, i) => (
                                             <motion.div
                                                 key={deal.id}
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: Math.min(i * 0.03, 0.3) }}
                                             >
-                                                <DealCard deal={deal} onQuickView={handleQuickView} />
+                                                <DealCard
+                                                    deal={deal}
+                                                    variant={viewMode === 'list' ? 'compact' : 'default'}
+                                                    onQuickView={handleQuickView}
+                                                />
                                             </motion.div>
                                         ))}
                                     </div>
