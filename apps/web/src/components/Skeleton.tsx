@@ -2,11 +2,14 @@ import { motion } from 'framer-motion';
 
 interface SkeletonProps {
     className?: string;
+    shimmer?: boolean;
 }
 
-export function Skeleton({ className = '' }: SkeletonProps) {
+export function Skeleton({ className = '', shimmer = true }: SkeletonProps) {
     return (
-        <div className={`animate-pulse bg-zinc-800 rounded ${className}`} />
+        <div
+            className={`${shimmer ? 'skeleton-shimmer' : 'animate-pulse bg-zinc-800'} rounded ${className}`}
+        />
     );
 }
 

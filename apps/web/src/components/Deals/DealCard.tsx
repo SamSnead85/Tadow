@@ -157,7 +157,7 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
 
                     {/* Discount Badge */}
                     {deal.discountPercent && deal.discountPercent >= 10 && (
-                        <div className="absolute top-3 right-3 px-2.5 py-1 bg-emerald-500 text-zinc-900 text-xs font-bold rounded-lg shadow-lg shadow-emerald-500/25">
+                        <div className="absolute top-3 right-3 px-2.5 py-1 bg-amber-500 text-zinc-900 text-xs font-bold rounded-lg shadow-lg shadow-amber-500/25">
                             -{deal.discountPercent}%
                         </div>
                     )}
@@ -212,7 +212,7 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
                         <span className="badge badge-marketplace">{deal.marketplace.name}</span>
                         <span className="badge badge-condition">{conditionLabels[deal.condition] || deal.condition}</span>
                         {deal.isVerifiedSeller && (
-                            <span className="flex items-center gap-1 text-emerald-400">
+                            <span className="flex items-center gap-1 text-amber-400">
                                 <CheckCircle className="w-3 h-3" />
                             </span>
                         )}
@@ -225,7 +225,7 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
                     </div>
 
                     {/* Title */}
-                    <h3 className="font-semibold text-white text-sm leading-snug line-clamp-2 mb-3 group-hover:text-emerald-300 transition-colors">
+                    <h3 className="font-semibold text-white text-sm leading-snug line-clamp-2 mb-3 group-hover:text-amber-300 transition-colors">
                         {deal.title}
                     </h3>
 

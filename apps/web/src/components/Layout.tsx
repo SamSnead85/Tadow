@@ -83,9 +83,9 @@ export function Layout() {
                                         {isActive && (
                                             <motion.div
                                                 layoutId="nav-indicator"
-                                                className={`absolute bottom-0 left-2 right-2 h-0.5 rounded-full ${link.isAI ? 'bg-violet-400' : 'bg-emerald-400'
+                                                className={`absolute bottom-0 left-2 right-2 h-0.5 rounded-full ${link.isAI ? 'bg-violet-400' : 'bg-amber-400'
                                                     }`}
-                                                style={{ boxShadow: link.isAI ? '0 0 12px rgba(139, 92, 246, 0.5)' : '0 0 12px rgba(16, 185, 129, 0.5)' }}
+                                                style={{ boxShadow: link.isAI ? '0 0 12px rgba(139, 92, 246, 0.5)' : '0 0 12px rgba(212, 168, 87, 0.5)' }}
                                             />
                                         )}
                                     </Link>
@@ -171,7 +171,7 @@ export function Layout() {
                                             to={link.path}
                                             onClick={() => setMobileMenuOpen(false)}
                                             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActivePath(link.path)
-                                                ? 'bg-emerald-500/10 text-emerald-400'
+                                                ? 'bg-amber-500/10 text-amber-400'
                                                 : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
                                                 }`}
                                         >
@@ -240,7 +240,7 @@ export function Layout() {
                             <ul className="space-y-2.5 text-sm">
                                 {['Laptops', 'Phones', 'TVs', 'Gaming', 'Audio', 'Wearables'].map(cat => (
                                     <li key={cat}>
-                                        <Link to={`/search?category=${cat}`} className="text-zinc-500 hover:text-emerald-400 transition-colors">
+                                        <Link to={`/search?category=${cat}`} className="text-zinc-500 hover:text-amber-400 transition-colors">
                                             {cat}
                                         </Link>
                                     </li>

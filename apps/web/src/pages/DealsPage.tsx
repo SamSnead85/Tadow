@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     Search, Zap, TrendingDown, Flame, ArrowRight, Sparkles,
-    Eye, Shield, Bell, Target, BarChart3, ArrowUpDown, Grid, List
+    Eye, Shield, Bell, Target, BarChart3, ArrowUpDown, Grid, List, Trophy
 } from 'lucide-react';
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton, FilterSkeleton } from '../components/Skeleton';
+import { DealOfTheDay, TrendingCarousel } from '../components/FeaturedDeals';
 
 interface Deal {
     id: string;
@@ -104,16 +105,29 @@ export function DealsPage() {
 
     const fetchData = async () => {
         try {
+            // Helper to normalize deal data from API to component format
+            const normalizeDeal = (deal: any) => ({
+                ...deal,
+                discountPercent: deal.discount || deal.discountPercent,
+                sellerName: deal.seller?.name || deal.sellerName || 'Unknown',
+                sellerRating: deal.seller?.rating || deal.sellerRating || 0,
+                sellerReviews: deal.seller?.reviews || deal.sellerReviews || 0,
+                isVerifiedSeller: deal.seller?.verified || deal.isVerifiedSeller || false,
+                city: deal.location?.city || deal.city,
+                state: deal.location?.state || deal.state,
+                marketplace: deal.marketplace || { name: deal.source || 'Unknown', color: '#888' },
+            });
+
             const hotRes = await fetch('/api/deals/hot');
             const hotData = await hotRes.json();
-            setHotDeals(hotData);
+            setHotDeals((hotData.deals || hotData || []).map(normalizeDeal));
 
             let dealsUrl = '/api/deals?limit=20';
             if (selectedCategory) dealsUrl += `&category=${selectedCategory}`;
             if (selectedMarketplaces.length) dealsUrl += `&marketplaces=${selectedMarketplaces.join(',')}`;
             const dealsRes = await fetch(dealsUrl);
             const dealsData = await dealsRes.json();
-            setAllDeals(dealsData.deals || []);
+            setAllDeals((dealsData.deals || []).map(normalizeDeal));
 
             const mpRes = await fetch('/api/marketplaces');
             const mpData = await mpRes.json();
@@ -206,7 +220,7 @@ export function DealsPage() {
                         {/* Headline */}
                         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight leading-tight">
                             Find incredible
-                            <span className="block text-gradient-mint">tech deals</span>
+                            <span className="block bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">tech deals</span>
                         </h1>
 
                         <p className="text-zinc-400 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -217,9 +231,9 @@ export function DealsPage() {
                         {/* Search Bar */}
                         <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-12">
                             <div className="relative group">
-                                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 opacity-0 group-focus-within:opacity-100 blur-xl transition-opacity duration-500" />
+                                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-500/20 via-yellow-400/20 to-amber-500/20 opacity-0 group-focus-within:opacity-100 blur-xl transition-opacity duration-500" />
                                 <div className="relative">
-                                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 group-focus-within:text-emerald-400 transition-colors" />
+                                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 group-focus-within:text-amber-400 transition-colors" />
                                     <input
                                         type="text"
                                         value={searchQuery}
@@ -270,7 +284,7 @@ export function DealsPage() {
                                 transition={{ delay: 0.6 }}
                                 className="text-center"
                             >
-                                <div className="text-3xl font-bold text-emerald-400 mb-1">
+                                <div className="text-3xl font-bold text-amber-400 mb-1">
                                     ${totalSavings > 0 ? Math.floor(totalSavings / 1000) : 15}K+
                                 </div>
                                 <div className="text-zinc-500">Total Savings</div>
@@ -292,20 +306,22 @@ export function DealsPage() {
 
             {/* Featured Deal Banner */}
             {featuredDeals.length > 0 && (
-                <section className="py-4 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border-y border-emerald-500/20">
+                <section className="py-4 bg-gradient-to-r from-amber-500/10 via-yellow-400/10 to-amber-500/10 border-y border-amber-500/20">
                     <div className="container-wide">
                         <Link to={`/deal/${featuredDeals[0].id}`} className="flex items-center justify-center gap-4 group">
-                            <span className="badge badge-deal">Featured Deal</span>
-                            <span className="text-white font-medium group-hover:text-emerald-300 transition-colors">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-500 to-yellow-400 text-zinc-900 text-xs font-bold rounded-full">
+                                <Trophy className="w-3 h-3" /> Featured
+                            </span>
+                            <span className="text-white font-medium group-hover:text-amber-300 transition-colors">
                                 {featuredDeals[0].title}
                             </span>
-                            <span className="text-emerald-400 font-bold">
+                            <span className="text-amber-400 font-bold">
                                 ${featuredDeals[0].currentPrice}
                             </span>
-                            <span className="badge badge-savings">
+                            <span className="px-2 py-0.5 bg-amber-500 text-zinc-900 text-xs font-bold rounded">
                                 -{featuredDeals[0].discountPercent}%
                             </span>
-                            <ArrowRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="w-4 h-4 text-amber-400 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
                 </section>
@@ -342,6 +358,16 @@ export function DealsPage() {
 
             {/* Main Content */}
             <div className="container-wide py-10">
+                {/* Deal of the Day - Prime Position */}
+                <div className="mb-8">
+                    <DealOfTheDay />
+                </div>
+
+                {/* Trending Carousel */}
+                <div className="mb-10">
+                    <TrendingCarousel />
+                </div>
+
                 <div className="flex gap-10">
                     {/* Sidebar */}
                     <aside className="hidden lg:block w-60 flex-shrink-0">
@@ -386,11 +412,11 @@ export function DealsPage() {
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
                                         <span className="text-zinc-400 text-sm">Avg. Discount</span>
-                                        <span className="text-emerald-400 font-semibold">32%</span>
+                                        <span className="text-amber-400 font-semibold">32%</span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span className="text-zinc-400 text-sm">Best Today</span>
-                                        <span className="text-emerald-400 font-semibold">-75%</span>
+                                        <span className="text-amber-400 font-semibold">-75%</span>
                                     </div>
                                     <div className="flex items-center justify-between">
                                         <span className="text-zinc-400 text-sm">All-Time Lows</span>
@@ -490,7 +516,7 @@ export function DealsPage() {
                                                 <select
                                                     value={sortBy}
                                                     onChange={(e) => setSortBy(e.target.value)}
-                                                    className="appearance-none pl-3 pr-8 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white cursor-pointer focus:outline-none focus:border-emerald-500/50 hover:bg-zinc-700 transition-colors"
+                                                    className="appearance-none pl-3 pr-8 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white cursor-pointer focus:outline-none focus:border-amber-500/50 hover:bg-zinc-700 transition-colors"
                                                 >
                                                     {sortOptions.map(opt => (
                                                         <option key={opt.value} value={opt.value}>{opt.label}</option>

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, SlidersHorizontal, X, TrendingDown, Sparkles, Grid, List, ArrowUpDown } from 'lucide-react';
+import { Search, SlidersHorizontal, X, TrendingDown, Sparkles, Grid, List, ArrowUpDown, Trophy, Flame, ArrowRight } from 'lucide-react';
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton } from '../components/Skeleton';
+import { showcaseDeals, collections, dealCategories } from '../data/showcaseDeals';
 
 interface Deal {
     id: string;
@@ -314,21 +315,100 @@ export function SearchPage() {
                         {loading ? (
                             <DealGridSkeleton count={6} />
                         ) : results.length === 0 ? (
-                            <div className="text-center py-16">
-                                <div className="w-20 h-20 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto mb-4">
-                                    <Search className="w-10 h-10 text-zinc-600" />
+                            <div className="space-y-10">
+                                {/* Message */}
+                                <div className="text-center py-8">
+                                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-4">
+                                        <Search className="w-8 h-8 text-amber-400" />
+                                    </div>
+                                    <h2 className="text-xl font-bold text-white mb-2">
+                                        {query ? `No exact matches for "${query}"` : 'Discover Amazing Deals'}
+                                    </h2>
+                                    <p className="text-zinc-400 max-w-md mx-auto">
+                                        {query ? "Check out these handpicked deals while we expand our search" : "Enter a search term above, or browse our curated picks below"}
+                                    </p>
                                 </div>
-                                <h2 className="text-xl font-bold text-white mb-2">
-                                    {query ? 'No results found' : 'Start searching'}
-                                </h2>
-                                <p className="text-zinc-500 mb-6">
-                                    {query ? "Try adjusting your search or filters" : "Enter a search term above to find deals"}
-                                </p>
-                                {query && (
-                                    <Link to="/" className="btn-primary">
-                                        Browse All Deals
-                                    </Link>
-                                )}
+
+                                {/* Hot Categories */}
+                                <div>
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-4">
+                                        Browse Categories
+                                    </h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        {dealCategories.map((cat, i) => (
+                                            <motion.div
+                                                key={cat.name}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: i * 0.05 }}
+                                            >
+                                                <Link
+                                                    to={`/?category=${cat.name.toLowerCase()}`}
+                                                    className="flex items-center gap-3 p-4 bg-zinc-900/60 hover:bg-zinc-800 border border-zinc-800 hover:border-amber-500/30 rounded-xl transition-all group"
+                                                >
+                                                    <span className="text-2xl">{cat.icon}</span>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-medium text-white group-hover:text-amber-400 transition-colors">{cat.name}</span>
+                                                            {cat.trending && <Flame className="w-3 h-3 text-orange-400" />}
+                                                        </div>
+                                                        <span className="text-xs text-zinc-500">{cat.count} deals</span>
+                                                    </div>
+                                                    <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-amber-400 transition-colors" />
+                                                </Link>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Prime Picks Section */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-2">
+                                            <Trophy className="w-5 h-5 text-amber-400" />
+                                            <h3 className="text-lg font-bold text-white">Prime Picks</h3>
+                                            <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs font-medium rounded-full">Top Rated</span>
+                                        </div>
+                                        <Link to="/" className="text-sm text-amber-400 hover:text-amber-300 flex items-center gap-1">
+                                            View All <ArrowRight className="w-4 h-4" />
+                                        </Link>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                                        {collections.find(c => c.id === 'prime-picks')?.deals.slice(0, 3).map((deal, i) => (
+                                            <motion.div
+                                                key={deal.id}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: i * 0.1 }}
+                                            >
+                                                <DealCard deal={deal as any} onQuickView={handleQuickView} />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* All-Time Lows Section */}
+                                <div>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-2">
+                                            <TrendingDown className="w-5 h-5 text-sky-400" />
+                                            <h3 className="text-lg font-bold text-white">All-Time Lows</h3>
+                                            <span className="px-2 py-0.5 bg-sky-500/20 text-sky-400 text-xs font-medium rounded-full">Best Ever</span>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                                        {collections.find(c => c.id === 'all-time-lows')?.deals.slice(0, 3).map((deal, i) => (
+                                            <motion.div
+                                                key={deal.id}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.3 + i * 0.1 }}
+                                            >
+                                                <DealCard deal={deal as any} onQuickView={handleQuickView} />
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         ) : (
                             <div className={viewMode === 'grid'

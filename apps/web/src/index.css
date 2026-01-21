@@ -3,27 +3,35 @@
 @tailwind utilities;
 
 /* ============================================
-   VERITY - Next-Gen AI E-Commerce Design System
-   Version 3.0 - Premium Deal Intelligence
+   TADOW - AI Deal Intelligence Design System
+   Version 4.0 - Obsidian & Gold
+   "Find Deals That Hit Different"
    ============================================ */
 
 :root {
-  /* Core Colors */
-  --bg-primary: #09090b;
-  --bg-secondary: #18181b;
-  --bg-tertiary: #27272a;
+  /* Obsidian Foundation */
+  --bg-primary: #0a0a0c;
+  --bg-secondary: #141418;
+  --bg-tertiary: #1c1c20;
   --border-primary: rgba(63, 63, 70, 0.5);
-  --border-glow: rgba(16, 185, 129, 0.3);
+  --border-glow: rgba(212, 168, 87, 0.3);
+
+  /* Tadow Brand Colors */
+  --tadow-gold: #D4A857;
+  --tadow-gold-light: #F5D78E;
+  --flame-orange: #F97316;
+  --trust-green: #10B981;
 
   /* Accent Gradients */
+  --gradient-gold: linear-gradient(135deg, #D4A857 0%, #F5D78E 50%, #D4A857 100%);
   --gradient-mint: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
   --gradient-ai: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #0ea5e9 100%);
   --gradient-hot: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
   --gradient-savings: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
 
   /* Glass Effects */
-  --glass-bg: rgba(24, 24, 27, 0.8);
-  --glass-border: rgba(63, 63, 70, 0.4);
+  --glass-bg: rgba(20, 20, 24, 0.85);
+  --glass-border: rgba(212, 168, 87, 0.15);
 }
 
 /* Base Styles */
@@ -43,16 +51,52 @@ body {
 
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
 }
 
 .glass-strong {
   background: rgba(24, 24, 27, 0.95);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
   border: 1px solid rgba(63, 63, 70, 0.6);
+}
+
+.glass-gold {
+  background: linear-gradient(135deg, rgba(212, 168, 87, 0.08) 0%, rgba(20, 20, 24, 0.9) 50%);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(212, 168, 87, 0.2);
+  box-shadow:
+    0 0 40px rgba(212, 168, 87, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.gold-glow {
+  box-shadow:
+    0 0 20px rgba(212, 168, 87, 0.15),
+    0 0 40px rgba(212, 168, 87, 0.1),
+    0 0 60px rgba(212, 168, 87, 0.05);
+}
+
+.gold-glow-intense {
+  box-shadow:
+    0 0 30px rgba(212, 168, 87, 0.25),
+    0 0 60px rgba(212, 168, 87, 0.15),
+    0 0 100px rgba(212, 168, 87, 0.08);
+}
+
+/* Premium hover lift effect */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(212, 168, 87, 0.1);
 }
 
 /* ============================================
@@ -61,18 +105,39 @@ body {
 
 .deal-card {
   @apply relative bg-zinc-900/80 backdrop-blur-sm rounded-2xl overflow-hidden;
-  @apply border border-zinc-800/60 transition-all duration-300;
-  @apply hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5;
+  @apply border border-zinc-800/60;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.deal-card:hover {
+  @apply border-amber-500/40;
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(212, 168, 87, 0.12),
+    0 0 60px rgba(212, 168, 87, 0.06);
 }
 
 .deal-card::before {
   content: '';
-  @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+  @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500;
+  background: linear-gradient(135deg, rgba(212, 168, 87, 0.06) 0%, transparent 40%, transparent 60%, rgba(212, 168, 87, 0.03) 100%);
   pointer-events: none;
 }
 
 .deal-card:hover::before {
+  @apply opacity-100;
+}
+
+/* Premium inner glow on hover */
+.deal-card::after {
+  content: '';
+  @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.deal-card:hover::after {
   @apply opacity-100;
 }
 
@@ -144,8 +209,8 @@ body {
 
 .nav-link-active::after {
   content: '';
-  @apply absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-emerald-400;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+  @apply absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-amber-400;
+  box-shadow: 0 0 12px rgba(212, 168, 87, 0.5);
 }
 
 /* ============================================
@@ -156,13 +221,13 @@ body {
   @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl;
   @apply font-semibold text-sm text-zinc-900;
   @apply transition-all duration-200;
-  background: var(--gradient-mint);
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  background: var(--gradient-gold);
+  box-shadow: 0 4px 14px rgba(212, 168, 87, 0.25);
 }
 
 .btn-primary:hover {
   @apply scale-[1.02];
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 6px 20px rgba(212, 168, 87, 0.4);
 }
 
 .btn-secondary {
@@ -237,7 +302,7 @@ body {
   @apply bg-zinc-900/80 backdrop-blur-sm;
   @apply border border-zinc-800 text-white;
   @apply placeholder:text-zinc-500;
-  @apply focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20;
+  @apply focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20;
   @apply transition-all duration-200;
 }
 
@@ -246,7 +311,7 @@ body {
   @apply bg-zinc-900/90 backdrop-blur-xl;
   @apply border border-zinc-800 text-white text-lg;
   @apply placeholder:text-zinc-500;
-  @apply focus:outline-none focus:border-emerald-500/40 focus:ring-4 focus:ring-emerald-500/10;
+  @apply focus:outline-none focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/10;
   @apply transition-all duration-200;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
@@ -298,8 +363,8 @@ body {
 }
 
 .category-pill-active {
-  @apply bg-emerald-500 text-zinc-900;
-  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3);
+  @apply bg-amber-500 text-zinc-900;
+  box-shadow: 0 2px 12px rgba(212, 168, 87, 0.3);
 }
 
 .category-pill-inactive {
@@ -332,6 +397,15 @@ body {
 .text-gradient-ai {
   @apply bg-clip-text text-transparent;
   background-image: var(--gradient-ai);
+}
+
+.text-gradient-gold {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #D4A857 0%, #F5D78E 50%, #D4A857 100%);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 30px rgba(212, 168, 87, 0.4), 0 0 60px rgba(212, 168, 87, 0.2);
 }
 
 /* ============================================
@@ -390,6 +464,17 @@ body {
   animation: shimmer 2s infinite;
 }
 
+.skeleton-shimmer {
+  background: linear-gradient(90deg,
+      rgba(39, 39, 42, 1) 0%,
+      rgba(63, 63, 70, 0.8) 25%,
+      rgba(212, 168, 87, 0.15) 50%,
+      rgba(63, 63, 70, 0.8) 75%,
+      rgba(39, 39, 42, 1) 100%);
+  background-size: 400% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -445,14 +530,14 @@ body {
 .ambient-glow {
   @apply fixed pointer-events-none;
   background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(16, 185, 129, 0.06),
+      rgba(212, 168, 87, 0.06),
       transparent 40%);
 }
 
 .hero-gradient {
   @apply absolute inset-0 pointer-events-none;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent),
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 168, 87, 0.12), transparent),
     radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139, 92, 246, 0.08), transparent),
-    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(6, 182, 212, 0.08), transparent);
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(245, 215, 142, 0.06), transparent);
 }
