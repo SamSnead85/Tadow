@@ -57,9 +57,11 @@ export function DealOfTheDay() {
                             alt={dealOfTheDay.title}
                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute top-3 left-3 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">
-                            -{dealOfTheDay.discount}%
-                        </div>
+                        {dealOfTheDay.discountPercent && dealOfTheDay.discountPercent > 0 && dealOfTheDay.discountPercent <= 99 && (
+                            <div className="absolute top-3 left-3 px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">
+                                -{dealOfTheDay.discountPercent}%
+                            </div>
+                        )}
                     </div>
 
                     {/* Content */}
@@ -169,7 +171,9 @@ export function TrendingCarousel() {
                                     </h4>
                                     <div className="flex items-center gap-2 mt-2">
                                         <span className="text-lg font-bold text-white">${deal.currentPrice}</span>
-                                        <span className="text-xs text-red-400 font-medium">-{deal.discount}%</span>
+                                        {deal.discountPercent && deal.discountPercent > 0 && deal.discountPercent <= 99 && (
+                                            <span className="text-xs text-red-400 font-medium">-{deal.discountPercent}%</span>
+                                        )}
                                     </div>
                                 </div>
                             </div>

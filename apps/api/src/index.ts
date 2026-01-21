@@ -8,6 +8,8 @@ import { pricesRouter } from './routes/prices';
 import { dealsRouter } from './routes/deals';
 import { marketplacesRouter } from './routes/marketplaces';
 import { categoriesRouter } from './routes/categories';
+import { aggregationRouter } from './routes/aggregation';
+import { agentRouter } from './routes/agent';
 
 
 dotenv.config();
@@ -34,6 +36,12 @@ app.use('/api/prices', pricesRouter);
 app.use('/api/deals', dealsRouter);
 app.use('/api/marketplaces', marketplacesRouter);
 app.use('/api/categories', categoriesRouter);
+
+// AI Aggregation Routes (Phase 3)
+app.use('/api/aggregation', aggregationRouter);
+
+// Agentic Deal Intelligence (Phase 1 Next-Level)
+app.use('/api/agent', agentRouter);
 
 // Error handler
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

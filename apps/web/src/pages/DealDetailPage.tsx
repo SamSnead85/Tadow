@@ -4,7 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Heart, Share2, Bell, MapPin, Star, Shield, Zap, TrendingDown, Eye, Bookmark, ChevronRight } from 'lucide-react';
 import { DealScore, DealCard, PriceHistoryChart } from '../components/Deals';
 import { Skeleton } from '../components/Skeleton';
-import { getDealById, getSimilarDeals, DEMO_DEALS } from '../data/demoDeals';
+import { getDealById, DEMO_DEALS } from '../data/demoDeals';
+import { showcaseDeals, getProductUrl, type ShowcaseDeal } from '../data/showcaseDeals';
 
 interface PriceHistoryPoint {
     price: number;
@@ -54,6 +55,91 @@ interface Deal {
     priceHistory: PriceHistoryPoint[];
 }
 
+// Convert ShowcaseDeal to Deal format
+function showcaseToDeal(showcase: ShowcaseDeal): Deal {
+    return {
+        id: showcase.id,
+        title: showcase.title,
+        description: showcase.description,
+        imageUrl: showcase.imageUrl,
+        originalPrice: showcase.originalPrice,
+        currentPrice: showcase.currentPrice,
+        discountPercent: showcase.discountPercent,
+        category: showcase.category,
+        brand: showcase.brand,
+        condition: showcase.condition,
+        dealScore: showcase.dealScore,
+        aiVerdict: showcase.aiVerdict,
+        priceVsAverage: -Math.round(showcase.discountPercent * 0.8), // Estimate
+        isHot: showcase.isHot,
+        isFeatured: showcase.isFeatured,
+        isAllTimeLow: showcase.isAllTimeLow,
+        allTimeLowPrice: showcase.currentPrice,
+        historicHighPrice: showcase.originalPrice,
+        pricePrediction: showcase.pricePrediction,
+        priceDropPercent30d: showcase.discountPercent,
+        fakeReviewRisk: 5,
+        reviewQualityScore: 90,
+        verifiedPurchasePercent: 85,
+        city: 'Online',
+        state: '',
+        externalUrl: getProductUrl(showcase),
+        views: Math.floor(Math.random() * 10000) + 1000,
+        saves: Math.floor(Math.random() * 1000) + 100,
+        postedAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
+        sellerName: showcase.sellerName,
+        sellerRating: showcase.sellerRating,
+        sellerReviews: showcase.sellerReviews,
+        isVerifiedSeller: showcase.isVerifiedSeller,
+        marketplace: {
+            id: showcase.marketplace.id,
+            name: showcase.marketplace.name,
+            color: showcase.marketplace.color,
+            baseUrl: `https://${showcase.marketplace.name.toLowerCase().replace(' ', '')}.com`,
+        },
+        priceHistory: (showcase.priceHistory || [showcase.originalPrice, showcase.currentPrice]).map((p, i) => ({
+            price: p,
+            recordedAt: new Date(Date.now() - (30 - i * 10) * 24 * 60 * 60 * 1000).toISOString(),
+        })),
+    };
+}
+
+// Find deal by ID from ALL sources
+function findDealById(id: string): Deal | undefined {
+    // 1. Check demoDeals.ts first
+    const demoDeal = getDealById(id);
+    if (demoDeal) return demoDeal as Deal;
+
+    // 2. Check showcaseDeals.ts
+    const showcaseDeal = showcaseDeals.find(d => d.id === id);
+    if (showcaseDeal) return showcaseToDeal(showcaseDeal);
+
+    // 3. Partial match in DEMO_DEALS
+    const partialDemo = DEMO_DEALS.find(d =>
+        d.id.includes(id) || id.includes(d.id.split('_')[1] || '')
+    );
+    if (partialDemo) return partialDemo as Deal;
+
+    // 4. Partial match in showcaseDeals
+    const partialShowcase = showcaseDeals.find(d =>
+        d.id.includes(id) || id.includes(d.id.split('-')[1] || '')
+    );
+    if (partialShowcase) return showcaseToDeal(partialShowcase);
+
+    return undefined;
+}
+
+// Find similar deals from ALL sources
+function findSimilarDeals(deal: Deal, limit = 4): Deal[] {
+    const allDeals = [
+        ...DEMO_DEALS.map(d => d as Deal),
+        ...showcaseDeals.map(s => showcaseToDeal(s)),
+    ];
+    return allDeals
+        .filter(d => d.id !== deal.id && (d.category === deal.category || d.brand === deal.brand))
+        .slice(0, limit);
+}
+
 export function DealDetailPage() {
     const { id } = useParams<{ id: string }>();
     const [deal, setDeal] = useState<Deal | null>(null);
@@ -80,18 +166,11 @@ export function DealDetailPage() {
                 throw new Error('API not available');
             }
         } catch (error) {
-            // Fallback to demo deals
-            const demoDeal = getDealById(id || '');
-            if (demoDeal) {
-                setDeal(demoDeal as Deal);
-                setSimilarDeals(getSimilarDeals(demoDeal) as Deal[]);
-            } else {
-                // Try partial ID match for demo deals
-                const partialMatch = DEMO_DEALS.find(d => d.id.includes(id || '') || id?.includes(d.id.split('_')[1] || ''));
-                if (partialMatch) {
-                    setDeal(partialMatch as Deal);
-                    setSimilarDeals(getSimilarDeals(partialMatch) as Deal[]);
-                }
+            // Fallback to local data sources (BOTH demoDeals AND showcaseDeals)
+            const foundDeal = findDealById(id || '');
+            if (foundDeal) {
+                setDeal(foundDeal);
+                setSimilarDeals(findSimilarDeals(foundDeal));
             }
         }
         setLoading(false);

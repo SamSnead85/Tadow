@@ -5,6 +5,8 @@ import { Search, Flame, Menu, X, Sparkles, Command, User } from 'lucide-react';
 import { SearchModal, useSearchModal } from './SearchModal';
 import { MobileNav, MobileNavSpacer } from './MobileNav';
 import { AuthModal } from './AuthModal';
+import AIChatWidget from './AIChatWidget';
+import { CommandPalette } from './CommandPalette';
 
 interface TadowUser {
     email: string;
@@ -49,6 +51,7 @@ export function Layout() {
         <div className="min-h-screen bg-zinc-950">
             <SearchModal isOpen={searchModal.isOpen} onClose={searchModal.close} />
             <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+            <CommandPalette />
 
             {/* Navigation */}
             <nav className={`nav-glass ${scrolled ? 'shadow-xl shadow-black/20' : ''}`}>
@@ -230,6 +233,9 @@ export function Layout() {
             <main className="pt-16">
                 <Outlet />
             </main>
+
+            {/* AI Chat Widget */}
+            <AIChatWidget />
 
             {/* Footer */}
             <footer className="border-t border-zinc-800/50 bg-zinc-950">

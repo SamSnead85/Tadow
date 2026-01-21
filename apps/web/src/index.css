@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Premium Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
 /* Safe area for notched devices */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0);
@@ -9,40 +12,89 @@
 
 /* ============================================
    TADOW - AI Deal Intelligence Design System
-   Version 4.0 - Obsidian & Gold
+   Version 5.0 - Premium Obsidian & Gold
    "Find Deals That Hit Different"
+   1000-Phase Expansion - Super Sprint 1
    ============================================ */
 
 :root {
-  /* Obsidian Foundation */
+  /* === OBSIDIAN DEPTH SYSTEM === */
+  --bg-void: #050507;
   --bg-primary: #0a0a0c;
-  --bg-secondary: #141418;
-  --bg-tertiary: #1c1c20;
-  --border-primary: rgba(63, 63, 70, 0.5);
-  --border-glow: rgba(212, 168, 87, 0.3);
+  --bg-secondary: #111114;
+  --bg-tertiary: #18181c;
+  --bg-elevated: #1f1f24;
+  --bg-surface: #26262c;
 
-  /* Tadow Brand Colors */
+  /* === BORDER HIERARCHY === */
+  --border-subtle: rgba(45, 45, 55, 0.5);
+  --border-default: rgba(63, 63, 70, 0.5);
+  --border-strong: rgba(82, 82, 91, 0.6);
+  --border-glow: rgba(212, 168, 87, 0.3);
+  --border-glow-intense: rgba(212, 168, 87, 0.5);
+
+  /* === TADOW BRAND PALETTE === */
   --tadow-gold: #D4A857;
   --tadow-gold-light: #F5D78E;
+  --tadow-gold-dark: #B8923E;
   --flame-orange: #F97316;
   --trust-green: #10B981;
+  --ai-purple: #8B5CF6;
+  --sky-blue: #0EA5E9;
 
-  /* Accent Gradients */
-  --gradient-gold: linear-gradient(135deg, #D4A857 0%, #F5D78E 50%, #D4A857 100%);
+  /* === SEMANTIC COLORS === */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+
+  /* === PREMIUM GRADIENTS === */
+  --gradient-gold: linear-gradient(135deg, #D4A857 0%, #F5D78E 35%, #D4A857 65%, #B8923E 100%);
+  --gradient-gold-radial: radial-gradient(ellipse at 30% 30%, #F5D78E 0%, #D4A857 50%, #B8923E 100%);
   --gradient-mint: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
   --gradient-ai: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #0ea5e9 100%);
   --gradient-hot: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
   --gradient-savings: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+  --gradient-obsidian: linear-gradient(180deg, #111114 0%, #0a0a0c 100%);
+  --gradient-spotlight: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 168, 87, 0.12), transparent);
 
-  /* Glass Effects */
-  --glass-bg: rgba(20, 20, 24, 0.85);
-  --glass-border: rgba(212, 168, 87, 0.15);
+  /* === GLASS MORPHISM === */
+  --glass-bg: rgba(17, 17, 20, 0.85);
+  --glass-bg-heavy: rgba(10, 10, 12, 0.95);
+  --glass-border: rgba(212, 168, 87, 0.12);
+  --glass-blur: blur(20px) saturate(180%);
+
+  /* === PREMIUM SHADOWS === */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-glow-gold: 0 0 30px rgba(212, 168, 87, 0.15), 0 0 60px rgba(212, 168, 87, 0.08);
+  --shadow-glow-ai: 0 0 30px rgba(139, 92, 246, 0.15), 0 0 60px rgba(139, 92, 246, 0.08);
+
+  /* === TIMING & EASING === */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
 }
 
-/* Base Styles */
+/* === BASE STYLES === */
 body {
   @apply bg-zinc-950 text-white antialiased;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+}
+
+/* Display headings use Outfit */
+h1,
+h2,
+.display-text {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 /* Container */
@@ -585,4 +637,312 @@ body {
   left: -50px;
   background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
   animation-delay: -4s;
+}
+
+/* ============================================
+   PHASE 4-5: MICRO-ANIMATIONS LIBRARY
+   ============================================ */
+
+/* Subtle hover scale */
+.hover-scale {
+  transition: transform var(--duration-normal) var(--ease-out-back);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Bounce on click */
+.click-bounce:active {
+  transform: scale(0.97);
+  transition: transform 100ms ease;
+}
+
+/* Fade slide up */
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide-up {
+  animation: fade-slide-up 0.4s var(--ease-out-expo) forwards;
+}
+
+/* Stagger children */
+.stagger-children>* {
+  opacity: 0;
+  animation: fade-slide-up 0.4s var(--ease-out-expo) forwards;
+}
+
+.stagger-children>*:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.stagger-children>*:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.stagger-children>*:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.stagger-children>*:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.stagger-children>*:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.stagger-children>*:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 168, 87, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(212, 168, 87, 0.4);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Spin slow */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Border beam effect */
+@keyframes border-beam {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.border-beam {
+  background: linear-gradient(90deg, transparent, var(--tadow-gold), transparent);
+  background-size: 200% 100%;
+  animation: border-beam 2s linear infinite;
+}
+
+/* ============================================
+   PHASE 6-7: TOAST NOTIFICATION SYSTEM
+   ============================================ */
+
+.toast-container {
+  @apply fixed bottom-6 right-6 z-[100] flex flex-col gap-3;
+  pointer-events: none;
+}
+
+.toast {
+  @apply flex items-center gap-3 px-5 py-3.5 rounded-xl;
+  @apply bg-zinc-900/95 backdrop-blur-xl border border-zinc-800;
+  @apply shadow-xl text-sm font-medium text-white;
+  pointer-events: auto;
+  animation: toast-enter 0.3s var(--ease-out-back);
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateX(100px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.toast-exit {
+  animation: toast-exit 0.2s ease forwards;
+}
+
+@keyframes toast-exit {
+  to {
+    opacity: 0;
+    transform: translateX(50px) scale(0.95);
+  }
+}
+
+.toast-success {
+  @apply border-emerald-500/30;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+}
+
+.toast-error {
+  @apply border-red-500/30;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+}
+
+.toast-warning {
+  @apply border-amber-500/30;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+}
+
+.toast-info {
+  @apply border-sky-500/30;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.15);
+}
+
+/* ============================================
+   PHASE 8-9: SKELETON LOADERS
+   ============================================ */
+
+.skeleton {
+  @apply bg-zinc-800/60 rounded-lg;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(212, 168, 87, 0.08) 50%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-text {
+  @apply skeleton h-4 rounded;
+}
+
+.skeleton-title {
+  @apply skeleton h-6 rounded w-3/4;
+}
+
+.skeleton-avatar {
+  @apply skeleton rounded-full;
+}
+
+.skeleton-image {
+  @apply skeleton aspect-video rounded-xl;
+}
+
+.skeleton-card {
+  @apply skeleton p-4 rounded-xl;
+}
+
+/* Page loading overlay */
+.loading-overlay {
+  @apply fixed inset-0 z-[200] flex items-center justify-center;
+  @apply bg-zinc-950/90 backdrop-blur-sm;
+}
+
+.loading-spinner {
+  @apply w-12 h-12 rounded-full border-2 border-zinc-700;
+  border-top-color: var(--tadow-gold);
+  animation: spin-slow 0.8s linear infinite;
+}
+
+/* ============================================
+   PHASE 10: COMMAND PALETTE
+   ============================================ */
+
+.command-palette {
+  @apply fixed inset-0 z-[150] flex items-start justify-center pt-[15vh];
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  animation: fade-in 0.15s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.command-palette-content {
+  @apply w-full max-w-2xl bg-zinc-900/95 border border-zinc-800 rounded-2xl overflow-hidden;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.8),
+    0 0 60px rgba(212, 168, 87, 0.08);
+  animation: command-slide-up 0.2s var(--ease-out-expo);
+}
+
+@keyframes command-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.command-input {
+  @apply w-full px-5 py-4 text-lg bg-transparent text-white;
+  @apply border-b border-zinc-800 outline-none;
+  @apply placeholder:text-zinc-500;
+}
+
+.command-results {
+  @apply max-h-[50vh] overflow-y-auto p-2;
+}
+
+.command-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer;
+  @apply text-zinc-300 transition-all duration-150;
+}
+
+.command-item:hover,
+.command-item[data-selected="true"] {
+  @apply bg-zinc-800/60 text-white;
+}
+
+.command-item-icon {
+  @apply w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center;
+  @apply text-zinc-400;
+}
+
+.command-item:hover .command-item-icon,
+.command-item[data-selected="true"] .command-item-icon {
+  @apply bg-amber-500/20 text-amber-400;
+}
+
+.command-kbd {
+  @apply px-2 py-0.5 text-xs font-mono bg-zinc-800 text-zinc-500 rounded;
 }

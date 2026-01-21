@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     Search, Zap, TrendingDown, Flame, ArrowRight, Sparkles,
-    Eye, Shield, Bell, Target, BarChart3, ArrowUpDown, Grid, List, Trophy
+    Eye, Shield, Bell, Target, BarChart3, ArrowUpDown, Grid, List, Trophy, ShoppingCart
 } from 'lucide-react';
 import { DealCard, MarketplaceFilter, QuickViewModal } from '../components/Deals';
 import { DealGridSkeleton, FilterSkeleton } from '../components/Skeleton';
@@ -64,11 +64,7 @@ const sortOptions = [
     { value: 'category', label: 'By Category' },
 ];
 
-const aiInsights = [
-    { icon: Target, label: 'Best Time to Buy', value: 'Now', color: 'text-emerald-400' },
-    { icon: BarChart3, label: 'Market Trend', value: '↓ Prices Dropping', color: 'text-sky-400' },
-    { icon: Shield, label: 'Verified Deals', value: '94%', color: 'text-violet-400' },
-];
+// AI Insights are now rendered inline in the trust bar
 
 export function DealsPage() {
     const navigate = useNavigate();
@@ -106,8 +102,8 @@ export function DealsPage() {
 
     const fetchData = async () => {
         try {
-            // Dynamic import for demo deals fallback
-            const { DEMO_DEALS, getHotDeals } = await import('../data/demoDeals');
+            // Dynamic import for extended deals database (112 products)
+            const { ALL_DEALS, getTrending } = await import('../data/extendedDeals');
 
             // Helper to normalize deal data from API to component format
             const normalizeDeal = (deal: any) => ({
@@ -131,12 +127,12 @@ export function DealsPage() {
                     throw new Error('API unavailable');
                 }
             } catch {
-                // Fallback to demo deals
-                setHotDeals(getHotDeals(6) as Deal[]);
+                // Fallback to extended deals - get trending/hot deals
+                setHotDeals(getTrending(12) as Deal[]);
             }
 
             try {
-                let dealsUrl = '/api/deals?limit=20';
+                let dealsUrl = '/api/deals?limit=50';
                 if (selectedCategory) dealsUrl += `&category=${selectedCategory}`;
                 if (selectedMarketplaces.length) dealsUrl += `&marketplaces=${selectedMarketplaces.join(',')}`;
                 const dealsRes = await fetch(dealsUrl);
@@ -147,8 +143,8 @@ export function DealsPage() {
                     throw new Error('API unavailable');
                 }
             } catch {
-                // Fallback to demo deals, optionally filtered by category
-                let deals = [...DEMO_DEALS];
+                // Fallback to extended deals, optionally filtered by category
+                let deals = [...ALL_DEALS];
                 if (selectedCategory) {
                     deals = deals.filter(d => d.category === selectedCategory);
                 }
@@ -235,118 +231,217 @@ export function DealsPage() {
         <div className="min-h-screen bg-zinc-950">
             <QuickViewModal deal={quickViewDeal} isOpen={isQuickViewOpen} onClose={() => setIsQuickViewOpen(false)} />
 
-            {/* Hero Section */}
+            {/* Hero Section - Cutting Edge Design */}
             <section
                 ref={heroRef}
-                className="relative py-20 pb-16 overflow-hidden"
+                className="relative py-12 pb-10 overflow-hidden"
                 style={{ '--mouse-x': `${mousePosition.x}%`, '--mouse-y': `${mousePosition.y}%` } as React.CSSProperties}
             >
-                {/* Ambient Background */}
+                {/* Premium Ambient Background */}
                 <div className="hero-gradient" />
                 <div className="ambient-glow inset-0" />
 
+                {/* Animated grid overlay for premium feel */}
+                <div className="absolute inset-0 opacity-[0.015]" style={{
+                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+                    backgroundSize: '64px 64px'
+                }} />
+
                 <div className="container-wide relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-center max-w-4xl mx-auto"
-                    >
-                        {/* AI Badge */}
+                    {/* Two-column layout: Left content, Right visual */}
+                    <div className="grid lg:grid-cols-12 gap-8 items-center">
+                        {/* Left: Hero Content */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.1 }}
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-violet-500/20 to-indigo-500/20 border border-violet-500/30 rounded-full mb-8"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="lg:col-span-7 text-left"
                         >
-                            <div className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
-                            <span className="text-violet-300 text-sm font-medium">AI-Powered Deal Intelligence</span>
-                            <Sparkles className="w-4 h-4 text-violet-400" />
-                        </motion.div>
+                            {/* Trust Bar - Compact inline */}
+                            <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="flex items-center gap-4 mb-6 flex-wrap"
+                            >
+                                <div className="flex items-center gap-1.5 text-xs text-zinc-400">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                    <span className="font-medium text-emerald-400">LIVE</span>
+                                    Scanning deals now
+                                </div>
+                                <div className="w-px h-4 bg-zinc-700" />
+                                <div className="flex items-center gap-1 text-xs text-zinc-500">
+                                    <Shield className="w-3 h-3 text-amber-400" />
+                                    <span><span className="text-amber-400 font-semibold">94%</span> Verified</span>
+                                </div>
+                                <div className="w-px h-4 bg-zinc-700" />
+                                <div className="flex items-center gap-1 text-xs text-zinc-500">
+                                    <BarChart3 className="w-3 h-3 text-sky-400" />
+                                    <span className="text-sky-400">Prices dropping</span>
+                                </div>
+                            </motion.div>
 
-                        {/* Headline */}
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight leading-tight">
-                            Find incredible
-                            <span className="block bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">tech deals</span>
-                        </h1>
+                            {/* Headline - Tighter, more impactful */}
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight leading-[1.1]">
+                                Never overpay for
+                                <span className="block bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+                                    tech again
+                                </span>
+                            </h1>
 
-                        <p className="text-zinc-400 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-                            Our AI searches 7+ marketplaces, analyzes prices, and curates the best deals—
-                            so you never overpay again.
-                        </p>
+                            <p className="text-zinc-400 text-lg mb-6 max-w-xl leading-relaxed">
+                                AI-powered price intelligence across 7 marketplaces. Find all-time lows,
+                                track price drops, and buy at the perfect moment.
+                            </p>
 
-                        {/* Search Bar */}
-                        <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-12">
-                            <div className="relative group">
-                                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-amber-500/20 via-yellow-400/20 to-amber-500/20 opacity-0 group-focus-within:opacity-100 blur-xl transition-opacity duration-500" />
-                                <div className="relative">
-                                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 group-focus-within:text-amber-400 transition-colors" />
-                                    <input
-                                        type="text"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Search laptops, phones, TVs, gaming gear..."
-                                        className="search-hero"
-                                    />
-                                    <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 btn-primary">
-                                        <Zap className="w-4 h-4" />
-                                        Search
+                            {/* Search Bar - Prominent */}
+                            <form onSubmit={handleSearch} className="max-w-xl mb-6">
+                                <div className="relative group">
+                                    <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-amber-500/20 via-yellow-400/20 to-amber-500/20 opacity-0 group-focus-within:opacity-100 blur-xl transition-opacity duration-500" />
+                                    <div className="relative flex items-center">
+                                        <Search className="absolute left-5 w-5 h-5 text-zinc-500 group-focus-within:text-amber-400 transition-colors" />
+                                        <input
+                                            type="text"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            placeholder='Try "MacBook Pro under $1500" or "best gaming laptop"'
+                                            className="w-full pl-14 pr-28 py-4 bg-zinc-900/80 border border-zinc-700/60 rounded-2xl text-white placeholder:text-zinc-500 focus:outline-none focus:border-amber-500/50 text-base"
+                                        />
+                                        <button type="submit" className="absolute right-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-zinc-900 font-semibold rounded-xl hover:from-amber-400 hover:to-yellow-300 transition-all flex items-center gap-2">
+                                            <Zap className="w-4 h-4" />
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            {/* Quick search suggestions */}
+                            <div className="flex items-center gap-2 flex-wrap mb-8">
+                                <span className="text-zinc-600 text-sm">Popular:</span>
+                                {['MacBook Air M3', 'RTX 4070', 'AirPods Pro', 'OLED TV'].map((term) => (
+                                    <button
+                                        key={term}
+                                        onClick={() => setSearchQuery(term)}
+                                        className="px-3 py-1.5 text-xs bg-zinc-800/60 hover:bg-zinc-700/60 border border-zinc-700/40 hover:border-amber-500/30 text-zinc-400 hover:text-amber-300 rounded-lg transition-all"
+                                    >
+                                        {term}
                                     </button>
+                                ))}
+                            </div>
+
+                            {/* Compact Stats Row */}
+                            <div className="flex items-center gap-6 text-sm">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center">
+                                        <Target className="w-4 h-4 text-amber-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xl font-bold text-white">{allDeals.length || 28}+</div>
+                                        <div className="text-zinc-500 text-xs">Live Deals</div>
+                                    </div>
+                                </div>
+                                <div className="w-px h-10 bg-zinc-800" />
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center">
+                                        <TrendingDown className="w-4 h-4 text-emerald-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xl font-bold text-emerald-400">${totalSavings > 0 ? Math.floor(totalSavings / 1000) : 15}K+</div>
+                                        <div className="text-zinc-500 text-xs">Saved by users</div>
+                                    </div>
+                                </div>
+                                <div className="w-px h-10 bg-zinc-800" />
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500/20 to-indigo-500/20 flex items-center justify-center">
+                                        <Sparkles className="w-4 h-4 text-violet-400" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xl font-bold text-violet-400">7</div>
+                                        <div className="text-zinc-500 text-xs">Marketplaces</div>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                        </motion.div>
 
-                        {/* AI Insights Bar */}
-                        <div className="flex items-center justify-center gap-6 flex-wrap mb-8">
-                            {aiInsights.map((insight, i) => (
-                                <motion.div
-                                    key={insight.label}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.3 + i * 0.1 }}
-                                    className="flex items-center gap-2.5 px-4 py-2 bg-zinc-900/60 border border-zinc-800/60 rounded-full"
-                                >
-                                    <insight.icon className={`w-4 h-4 ${insight.color}`} />
-                                    <span className="text-zinc-500 text-sm">{insight.label}:</span>
-                                    <span className={`text-sm font-semibold ${insight.color}`}>{insight.value}</span>
-                                </motion.div>
-                            ))}
-                        </div>
+                        {/* Right: Featured Deal Preview Card */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="lg:col-span-5 hidden lg:block"
+                        >
+                            <div className="relative">
+                                {/* Glow effect behind */}
+                                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-amber-500/20 via-transparent to-violet-500/20 blur-2xl opacity-40" />
 
-                        {/* Stats */}
-                        <div className="flex items-center justify-center gap-12 text-sm">
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                className="text-center"
-                            >
-                                <div className="text-3xl font-bold text-white mb-1">{allDeals.length || 28}+</div>
-                                <div className="text-zinc-500">Active Deals</div>
-                            </motion.div>
-                            <div className="w-px h-10 bg-zinc-800" />
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.6 }}
-                                className="text-center"
-                            >
-                                <div className="text-3xl font-bold text-amber-400 mb-1">
-                                    ${totalSavings > 0 ? Math.floor(totalSavings / 1000) : 15}K+
+                                {/* Featured deal card preview */}
+                                <div className="relative bg-zinc-900/80 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-5 space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-500 to-yellow-400 text-zinc-900 text-xs font-bold rounded-full">
+                                            <Trophy className="w-3 h-3" /> DEAL OF THE DAY
+                                        </span>
+                                        <span className="text-xs text-zinc-500">Ends in 4h 32m</span>
+                                    </div>
+
+                                    {featuredDeals.length > 0 ? (
+                                        <Link to={`/deal/${featuredDeals[0].id}`} className="block group">
+                                            <div className="flex items-start gap-4">
+                                                <div className="w-20 h-20 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                                                    {featuredDeals[0].imageUrl ? (
+                                                        <img src={featuredDeals[0].imageUrl} alt="" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <ShoppingCart className="w-8 h-8 text-zinc-600" />
+                                                    )}
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <h4 className="text-white font-medium line-clamp-2 group-hover:text-amber-300 transition-colors">
+                                                        {featuredDeals[0].title}
+                                                    </h4>
+                                                    <div className="flex items-center gap-2 mt-1.5">
+                                                        <span className="text-xl font-bold text-emerald-400">${featuredDeals[0].currentPrice}</span>
+                                                        <span className="text-zinc-500 line-through text-sm">${featuredDeals[0].originalPrice}</span>
+                                                        {featuredDeals[0].discountPercent && featuredDeals[0].discountPercent > 0 && featuredDeals[0].discountPercent <= 99 && (
+                                                            <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded">
+                                                                -{featuredDeals[0].discountPercent}%
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ) : (
+                                        <div className="flex items-start gap-4">
+                                            <div className="w-20 h-20 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                                                <ShoppingCart className="w-8 h-8 text-zinc-600" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h4 className="text-white font-medium">MacBook Air M3 15" - 256GB</h4>
+                                                <div className="flex items-center gap-2 mt-1.5">
+                                                    <span className="text-xl font-bold text-emerald-400">$1,049</span>
+                                                    <span className="text-zinc-500 line-through text-sm">$1,299</span>
+                                                    <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded">-19%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* AI Verdict mini */}
+                                    <div className="flex items-center gap-2 p-3 bg-violet-500/10 border border-violet-500/20 rounded-xl">
+                                        <Sparkles className="w-4 h-4 text-violet-400" />
+                                        <span className="text-sm text-violet-300">AI says: <span className="font-semibold text-white">Great time to buy</span></span>
+                                    </div>
+
+                                    {/* CTA */}
+                                    <Link
+                                        to="/deals"
+                                        className="flex items-center justify-center gap-2 w-full py-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-xl text-white font-medium transition-all group"
+                                    >
+                                        View All Deals
+                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </Link>
                                 </div>
-                                <div className="text-zinc-500">Total Savings</div>
-                            </motion.div>
-                            <div className="w-px h-10 bg-zinc-800" />
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.7 }}
-                                className="text-center"
-                            >
-                                <div className="text-3xl font-bold text-violet-400 mb-1">7</div>
-                                <div className="text-zinc-500">Marketplaces</div>
-                            </motion.div>
-                        </div>
-                    </motion.div>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
@@ -364,9 +459,11 @@ export function DealsPage() {
                             <span className="text-amber-400 font-bold">
                                 ${featuredDeals[0].currentPrice}
                             </span>
-                            <span className="px-2 py-0.5 bg-amber-500 text-zinc-900 text-xs font-bold rounded">
-                                -{featuredDeals[0].discountPercent}%
-                            </span>
+                            {featuredDeals[0].discountPercent && featuredDeals[0].discountPercent > 0 && featuredDeals[0].discountPercent <= 99 && (
+                                <span className="px-2 py-0.5 bg-amber-500 text-zinc-900 text-xs font-bold rounded">
+                                    -{featuredDeals[0].discountPercent}%
+                                </span>
+                            )}
                             <ArrowRight className="w-4 h-4 text-amber-400 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>

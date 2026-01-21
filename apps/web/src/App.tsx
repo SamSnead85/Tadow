@@ -10,6 +10,8 @@ import { DealDetailPage } from './pages/DealDetailPage';
 import { WatchlistPage } from './pages/WatchlistPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CategoryPage } from './pages/CategoryPage';
+import { BrandPage } from './pages/BrandPage';
+import { AllCategoriesPage } from './pages/AllCategoriesPage';
 import { AccountPage } from './pages/AccountPage';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import SellerDashboard from './pages/SellerDashboard';
@@ -25,6 +27,7 @@ import NotificationsPage from './pages/NotificationsPage';
 import DiscoverPage from './pages/DiscoverPage';
 import SavedSearchesPage from './pages/SavedSearchesPage';
 import AIAssistantPage from './pages/AIAssistantPage';
+import { AgentDashboard } from './pages/AgentDashboard';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -73,8 +76,11 @@ function App() {
                         <Route path="deal/:id" element={<AnimatedPage><DealDetailPage /></AnimatedPage>} />
                         <Route path="watchlist" element={<AnimatedPage><WatchlistPage /></AnimatedPage>} />
                         <Route path="category/:category" element={<AnimatedPage><CategoryPage /></AnimatedPage>} />
+                        <Route path="brand/:brand" element={<AnimatedPage><BrandPage /></AnimatedPage>} />
+                        <Route path="categories" element={<AnimatedPage><AllCategoriesPage /></AnimatedPage>} />
 
-                        {/* AI & Account */}
+                        {/* AI & Agentic Features */}
+                        <Route path="agent" element={<AnimatedPage><AgentDashboard /></AnimatedPage>} />
                         <Route path="assistant" element={<AnimatedPage><AIAssistantPage /></AnimatedPage>} />
                         <Route path="ai" element={<AnimatedPage><AIAssistantPage /></AnimatedPage>} />
                         <Route path="account" element={<AnimatedPage><AccountPage /></AnimatedPage>} />
