@@ -43,14 +43,14 @@ export function Layout() {
                                 className="relative"
                             >
                                 <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 blur-lg opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
-                                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/25">
-                                    <span className="text-zinc-900 font-bold text-xl">V</span>
+                                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/25 overflow-hidden">
+                                    <Zap className="w-6 h-6 text-zinc-900 fill-current" />
                                 </div>
                             </motion.div>
 
                             <div className="flex flex-col">
                                 <span className="font-bold text-xl text-white tracking-tight group-hover:text-emerald-300 transition-colors">
-                                    Verity
+                                    Tadow
                                 </span>
                                 <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest -mt-0.5">
                                     Deal Intelligence
@@ -69,8 +69,8 @@ export function Layout() {
                                         <motion.div
                                             whileHover={{ y: -1 }}
                                             className={`flex items-center gap-1.5 ${isActive
-                                                    ? link.isAI ? 'text-violet-400' : 'text-emerald-400'
-                                                    : 'text-zinc-400 group-hover:text-white'
+                                                ? link.isAI ? 'text-violet-400' : 'text-emerald-400'
+                                                : 'text-zinc-400 group-hover:text-white'
                                                 }`}
                                         >
                                             {Icon && <Icon className="w-3.5 h-3.5" />}
@@ -169,8 +169,8 @@ export function Layout() {
                                             to={link.path}
                                             onClick={() => setMobileMenuOpen(false)}
                                             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActivePath(link.path)
-                                                    ? 'bg-emerald-500/10 text-emerald-400'
-                                                    : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
+                                                ? 'bg-emerald-500/10 text-emerald-400'
+                                                : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white'
                                                 }`}
                                         >
                                             {Icon && <Icon className="w-4 h-4" />}
@@ -201,11 +201,11 @@ export function Layout() {
                         <div className="md:col-span-2">
                             <div className="flex items-center gap-3 mb-5">
                                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                                    <span className="text-zinc-900 font-bold text-lg">V</span>
+                                    <Zap className="w-6 h-6 text-zinc-900 fill-current" />
                                 </div>
                                 <div>
-                                    <span className="font-bold text-xl text-white">Verity</span>
-                                    <span className="text-zinc-600 text-xs ml-2 font-mono">v3.0</span>
+                                    <span className="font-bold text-xl text-white">Tadow</span>
+                                    <span className="text-zinc-600 text-xs ml-2 font-mono">v1.0</span>
                                 </div>
                             </div>
                             <p className="text-zinc-400 text-sm leading-relaxed mb-5 max-w-xs">
@@ -257,7 +257,7 @@ export function Layout() {
                     </div>
 
                     <div className="mt-12 pt-8 border-t border-zinc-800/50 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <p className="text-zinc-600 text-xs">© 2026 Verity. All rights reserved.</p>
+                        <p className="text-zinc-600 text-xs">© 2026 Tadow. All rights reserved.</p>
                         <div className="flex items-center gap-6 text-xs text-zinc-500">
                             <span className="flex items-center gap-1 text-zinc-600">
                                 <Command className="w-3 h-3" />K to search

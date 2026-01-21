@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
-import { VerityScore } from '@/components/ProductDNA';
+import { TadowScore } from '@/components/ProductDNA';
 import { mockProducts } from '@/data/products';
 import type { Product } from '@/types';
 
@@ -34,7 +34,7 @@ export function BrowsePage() {
         .sort((a, b) => {
             switch (sortBy) {
                 case 'score':
-                    return b.verityScore - a.verityScore;
+                    return b.tadowScore - a.tadowScore;
                 case 'price-low':
                     return Math.min(...a.prices.map(p => p.price)) - Math.min(...b.prices.map(p => p.price));
                 case 'price-high':
@@ -58,7 +58,7 @@ export function BrowsePage() {
                     >
                         <h1 className="text-display mb-4 text-noir-900">Browse All Laptops</h1>
                         <p className="text-lg text-noir-600">
-                            Explore our curated selection of laptops with transparent Verity Scores
+                            Explore our curated selection of laptops with transparent Tadow Scores
                         </p>
                     </motion.div>
 
@@ -156,8 +156,8 @@ export function BrowsePage() {
                                                         <p className="text-sm text-noir-500">{product.brand}</p>
                                                         <h3 className="font-semibold text-noir-900">{product.name}</h3>
                                                     </div>
-                                                    <VerityScore
-                                                        score={product.verityScore}
+                                                    <TadowScore
+                                                        score={product.tadowScore}
                                                         breakdown={product.scoreBreakdown}
                                                         size="sm"
                                                     />
@@ -189,7 +189,7 @@ export function BrowsePage() {
                                                             ${Math.min(...product.prices.map(p => p.price)).toLocaleString()}
                                                         </p>
                                                     </div>
-                                                    <span className="text-verity-600 font-medium text-sm">
+                                                    <span className="text-tadow-600 font-medium text-sm">
                                                         View Details →
                                                     </span>
                                                 </div>

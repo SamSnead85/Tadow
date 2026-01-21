@@ -1,19 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/verity-icon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Verity - Your AI-Powered Decision Concierge. Make confident purchase decisions with personalized recommendations and transparent scoring." />
-    <title>Verity | AI-Powered Decision Concierge</title>
-    
-    <!-- Premium Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta Tags -->
+  <title>Tadow | AI-Powered Deal Intelligence - Find the Best Tech Deals</title>
+  <meta name="title" content="Tadow | AI-Powered Deal Intelligence - Find the Best Tech Deals" />
+  <meta name="description"
+    content="Tadow uses AI to aggregate deals from 7+ marketplaces, analyze prices, and find you the best tech deals. Compare laptops, phones, TVs, gaming gear and more. Never overpay again." />
+  <meta name="keywords"
+    content="tech deals, best prices, laptop deals, phone deals, gaming deals, price comparison, deal finder, AI shopping assistant, electronics deals, discount finder, price tracker, best buy deals, amazon deals, ebay deals" />
+  <meta name="author" content="Tadow" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://tadow.ai" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tadow.ai/" />
+  <meta property="og:title" content="Tadow | AI-Powered Deal Intelligence" />
+  <meta property="og:description"
+    content="Find incredible tech deals with AI-powered price analysis. We search 7+ marketplaces so you don't have to." />
+  <meta property="og:image" content="https://tadow.ai/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Tadow" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://tadow.ai/" />
+  <meta name="twitter:title" content="Tadow | AI-Powered Deal Intelligence" />
+  <meta name="twitter:description"
+    content="Find incredible tech deals with AI-powered price analysis. Never overpay again." />
+  <meta name="twitter:image" content="https://tadow.ai/og-image.png" />
+  <meta name="twitter:creator" content="@tadowai" />
+
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#10B981" />
+  <meta name="msapplication-TileColor" content="#0f172a" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- JSON-LD Structured Data for SEO & LLM Optimization -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://tadow.ai/#website",
+          "url": "https://tadow.ai",
+          "name": "Tadow",
+          "description": "AI-Powered Deal Intelligence Platform",
+          "publisher": { "@id": "https://tadow.ai/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://tadow.ai/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://tadow.ai/#organization",
+          "name": "Tadow",
+          "url": "https://tadow.ai",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://tadow.ai/logo.png",
+            "width": 512,
+            "height": 512
+          },
+          "sameAs": [
+            "https://twitter.com/tadowai",
+            "https://github.com/SamSnead85/Tadow"
+          ]
+        },
+        {
+          "@type": "WebApplication",
+          "name": "Tadow Deal Finder",
+          "description": "Find the best tech deals across Amazon, eBay, Best Buy, Walmart, Slickdeals, and more. AI-powered price analysis helps you save money on laptops, phones, TVs, gaming gear, and electronics.",
+          "url": "https://tadow.ai",
+          "applicationCategory": "ShoppingApplication",
+          "operatingSystem": "Web",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "Multi-marketplace deal aggregation",
+            "AI-powered deal scoring",
+            "Price history tracking",
+            "Real-time deal alerts",
+            "Laptop deals and comparisons",
+            "Phone and smartphone deals",
+            "Gaming console and accessory deals",
+            "TV and monitor deals",
+            "Audio equipment deals"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does Tadow find the best tech deals?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Tadow aggregates deals from 7+ marketplaces including Amazon, eBay, Best Buy, Walmart, Slickdeals, DealNews, and Craigslist. Our AI analyzes each deal's price, seller reputation, and market trends to score deals from 0-100, helping you identify truly great deals."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What products can I find deals on?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Tadow specializes in tech and electronics deals including laptops, smartphones, TVs, gaming consoles (PS5, Xbox, Nintendo Switch), headphones, tablets, cameras, and computer accessories. We focus on electronics because price fluctuation is highest in this category."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Tadow free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, Tadow is completely free to use. We help you find the best deals across multiple marketplaces without any subscription or fees."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How is the deal score calculated?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our AI calculates a 0-100 deal score based on: price compared to historical data (40%), seller reputation and reviews (30%), deal freshness and timing (20%), and community engagement (10%). Scores above 80 are considered great deals."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+  <!-- LLM Search Optimization - Additional context for AI assistants -->
+  <meta name="ai-content-summary"
+    content="Tadow is an AI-powered deal intelligence platform that aggregates tech deals from Amazon, eBay, Best Buy, Walmart, Slickdeals, DealNews, and Craigslist. It uses machine learning to score deals from 0-100 based on price, seller reputation, and market trends. Users can search for laptops, phones, TVs, gaming gear, and audio equipment to find the best prices. The platform is free to use and updates deals in real-time." />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

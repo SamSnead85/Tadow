@@ -333,7 +333,7 @@ export function DealDetailPage() {
                             className="deal-card p-6"
                         >
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="font-semibold text-white">Verity Score</h3>
+                                <h3 className="font-semibold text-white">Tadow Score</h3>
                                 <DealScore score={deal.dealScore} size="lg" />
                             </div>
                             <div className="text-lg font-semibold text-emerald-400 mb-2">{deal.aiVerdict}</div>

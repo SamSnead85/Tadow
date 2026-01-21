@@ -7,8 +7,8 @@ export interface Product {
     imageUrl: string;
     bottomLine: string;
 
-    // Verity Score
-    verityScore: number;
+    // Tadow Score
+    tadowScore: number;
     scoreBreakdown: ScoreBreakdown;
 
     // Technical Specs

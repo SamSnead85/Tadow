@@ -8,7 +8,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800',
         bottomLine: 'The ultimate balance of power and portability for everyday users.',
-        verityScore: 92,
+        tadowScore: 92,
         scoreBreakdown: {
             performance: 88,
             display: 95,
@@ -43,7 +43,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800',
         bottomLine: 'A creative powerhouse with a stunning OLED display for professionals.',
-        verityScore: 88,
+        tadowScore: 88,
         scoreBreakdown: {
             performance: 92,
             display: 98,
@@ -78,7 +78,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800',
         bottomLine: 'The best gaming laptop for those who also need portability.',
-        verityScore: 90,
+        tadowScore: 90,
         scoreBreakdown: {
             performance: 95,
             display: 90,
@@ -113,7 +113,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800',
         bottomLine: 'The business laptop benchmark for professionals who demand reliability.',
-        verityScore: 89,
+        tadowScore: 89,
         scoreBreakdown: {
             performance: 85,
             display: 88,
@@ -148,7 +148,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800',
         bottomLine: 'A stunning 2-in-1 that excels for students and light creative work.',
-        verityScore: 85,
+        tadowScore: 85,
         scoreBreakdown: {
             performance: 82,
             display: 92,
@@ -183,7 +183,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=800',
         bottomLine: 'No-compromise performance in a premium, sleek package.',
-        verityScore: 87,
+        tadowScore: 87,
         scoreBreakdown: {
             performance: 98,
             display: 94,
@@ -218,7 +218,7 @@ export const mockProducts: Product[] = [
         category: 'laptop',
         imageUrl: 'https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=800',
         bottomLine: 'The modular laptop for those who want to upgrade and repair forever.',
-        verityScore: 86,
+        tadowScore: 86,
         scoreBreakdown: {
             performance: 88,
             display: 82,
@@ -253,6 +253,6 @@ export function getProductById(id: string): Product | undefined {
 export function getRecommendations(persona: string): Product[] {
     return mockProducts
         .filter(p => p.idealPersonas.includes(persona))
-        .sort((a, b) => b.verityScore - a.verityScore)
+        .sort((a, b) => b.tadowScore - a.tadowScore)
         .slice(0, 3);
 }

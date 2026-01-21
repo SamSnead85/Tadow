@@ -3,7 +3,7 @@ import { Question } from '@/types';
 export const questions: Question[] = [
     {
         id: 'q1',
-        text: "Welcome to Verity! I'm your AI Decision Concierge. Let's find your perfect laptop. What will you primarily use it for?",
+        text: "Welcome to Tadow! I'm your AI Decision Concierge. Let's find your perfect laptop. What will you primarily use it for?",
         key: 'primaryUse',
         options: [
             { id: 'work', label: 'Work & Productivity', value: 'work', icon: '💼' },

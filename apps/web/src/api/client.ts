@@ -54,7 +54,7 @@ export async function fetchRecommendations(answers: {
         // Fallback to local recommendation logic
         const { getRecommendations } = await import('@/data/products');
         const { determinePersona } = await import('@/utils/recommendations');
-        const { personaDescriptions } = await import('@/components/VerityAssistant/questions');
+        const { personaDescriptions } = await import('@/components/TadowAssistant/questions');
 
         const persona = determinePersona(answers as any);
         const recommendations = getRecommendations(persona);

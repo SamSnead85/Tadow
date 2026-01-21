@@ -27,7 +27,7 @@ const steps = [
     {
         icon: BarChart3,
         title: 'See Personalized Matches',
-        description: 'View laptops ranked by how well they match your needs, with transparent Verity Scores showing exactly why each product earned its rating.',
+        description: 'View laptops ranked by how well they match your needs, with transparent Tadow Scores showing exactly why each product earned its rating.',
         color: 'bg-green-100 text-green-600',
     },
     {
@@ -76,12 +76,12 @@ export function HowItWorksPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-verity-50 text-verity-700 rounded-full mb-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-tadow-50 text-tadow-700 rounded-full mb-6">
                             <Shield className="w-4 h-4" />
                             <span className="text-sm font-medium">100% Unbiased</span>
                         </div>
                         <h1 className="text-display mb-6 text-noir-900">
-                            How Verity Works
+                            How Tadow Works
                         </h1>
                         <p className="text-lg text-noir-600 leading-relaxed">
                             We're not like other product review sites. No ads, no sponsored content,
@@ -121,7 +121,7 @@ export function HowItWorksPage() {
                                     <div className={`w-12 h-12 rounded-xl ${step.color} flex items-center justify-center mb-4`}>
                                         <step.icon className="w-6 h-6" />
                                     </div>
-                                    <div className="text-sm text-verity-600 font-medium mb-2">Step {index + 1}</div>
+                                    <div className="text-sm text-tadow-600 font-medium mb-2">Step {index + 1}</div>
                                     <h3 className="font-semibold text-noir-900 mb-2">{step.title}</h3>
                                     <p className="text-noir-600 text-sm">{step.description}</p>
                                 </div>
@@ -131,7 +131,7 @@ export function HowItWorksPage() {
                 </div>
             </section>
 
-            {/* Verity Score Explanation */}
+            {/* Tadow Score Explanation */}
             <section className="section-padding bg-noir-900 text-white">
                 <div className="container-wide">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -140,21 +140,21 @@ export function HowItWorksPage() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                         >
-                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-verity-600/20 text-verity-400 rounded-full mb-6">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-tadow-600/20 text-tadow-400 rounded-full mb-6">
                                 <Sparkles className="w-4 h-4" />
-                                <span className="text-sm font-medium">The Verity Score</span>
+                                <span className="text-sm font-medium">The Tadow Score</span>
                             </div>
                             <h2 className="text-display-sm mb-6">
                                 A New Standard of Trust
                             </h2>
                             <p className="text-noir-300 mb-8 leading-relaxed">
-                                The Verity Score is a transparent 1-100 rating that combines multiple
+                                The Tadow Score is a transparent 1-100 rating that combines multiple
                                 data sources into one trustworthy number. Unlike star ratings that can
                                 be manipulated, our score is calculated from verified expert reviews,
                                 long-term user feedback, and objective value analysis.
                             </p>
                             <p className="text-noir-400 text-sm">
-                                Hover over any Verity Score to see exactly how it was calculated.
+                                Hover over any Tadow Score to see exactly how it was calculated.
                             </p>
                         </motion.div>
 
@@ -175,7 +175,7 @@ export function HowItWorksPage() {
                                         viewport={{ once: true }}
                                         className="flex gap-4"
                                     >
-                                        <div className="flex-shrink-0 w-14 h-8 bg-verity-600 rounded flex items-center justify-center">
+                                        <div className="flex-shrink-0 w-14 h-8 bg-tadow-600 rounded flex items-center justify-center">
                                             <span className="text-sm font-bold">{factor.weight}</span>
                                         </div>
                                         <div>
@@ -193,7 +193,7 @@ export function HowItWorksPage() {
             {/* Trust Badges */}
             <section className="section-padding">
                 <div className="container-wide text-center">
-                    <h2 className="text-display-sm text-noir-900 mb-12">Why Trust Verity?</h2>
+                    <h2 className="text-display-sm text-noir-900 mb-12">Why Trust Tadow?</h2>
 
                     <div className="grid md:grid-cols-3 gap-8 mb-12">
                         <motion.div

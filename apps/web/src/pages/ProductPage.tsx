@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Share2, Heart } from 'lucide-react';
-import { VerityScore, StrengthsWeaknesses, ReviewSummary, TechSpecs } from '@/components/ProductDNA';
+import { TadowScore, StrengthsWeaknesses, ReviewSummary, TechSpecs } from '@/components/ProductDNA';
 import { PriceTable } from '@/components/PriceEngine';
 import { getProductById } from '@/data/products';
 
@@ -59,28 +59,28 @@ export function ProductPage() {
                         >
                             {/* Brand & Title */}
                             <div>
-                                <p className="text-verity-600 font-medium mb-2">{product.brand}</p>
+                                <p className="text-tadow-600 font-medium mb-2">{product.brand}</p>
                                 <h1 className="text-display-sm text-noir-900 mb-4">{product.name}</h1>
 
                                 {/* Bottom Line */}
-                                <div className="glass-card rounded-xl p-4 border-l-4 border-verity-600">
+                                <div className="glass-card rounded-xl p-4 border-l-4 border-tadow-600">
                                     <p className="text-sm text-noir-500 mb-1">The Bottom Line</p>
                                     <p className="text-noir-800 font-medium">{product.bottomLine}</p>
                                 </div>
                             </div>
 
-                            {/* Verity Score */}
+                            {/* Tadow Score */}
                             <div className="flex items-center gap-6">
-                                <VerityScore
-                                    score={product.verityScore}
+                                <TadowScore
+                                    score={product.tadowScore}
                                     breakdown={product.scoreBreakdown}
                                     size="lg"
                                 />
                                 <div>
-                                    <p className="text-sm text-noir-500 mb-1">Verity Score</p>
+                                    <p className="text-sm text-noir-500 mb-1">Tadow Score</p>
                                     <p className="text-noir-700 text-sm max-w-xs">
                                         Based on expert analysis, user reviews, and value assessment.
-                                        <button className="text-verity-600 ml-1 hover:underline">
+                                        <button className="text-tadow-600 ml-1 hover:underline">
                                             Learn more
                                         </button>
                                     </p>

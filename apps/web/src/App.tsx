@@ -21,7 +21,7 @@ function App() {
                     <Route path="search" element={<SearchPage />} />
                     <Route path="deal/:id" element={<DealDetailPage />} />
 
-                    {/* Product Research (Original Verity) */}
+                    {/* Product Research (Original Tadow) */}
                     <Route path="assistant" element={<HomePage />} />
                     <Route path="browse" element={<BrowsePage />} />
                     <Route path="how-it-works" element={<HowItWorksPage />} />

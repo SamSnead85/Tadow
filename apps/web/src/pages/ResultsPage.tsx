@@ -1,8 +1,8 @@
 import { useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { VerityScore } from '@/components/ProductDNA';
-import { personaDescriptions } from '@/components/VerityAssistant';
+import { TadowScore } from '@/components/ProductDNA';
+import { personaDescriptions } from '@/components/TadowAssistant';
 import { getRecommendations } from '@/data/products';
 import type { Persona } from '@/types';
 
@@ -50,13 +50,13 @@ export function ResultsPage() {
                 <div className="container-wide">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-2">
-                            <Sparkles className="w-5 h-5 text-verity-600" />
+                            <Sparkles className="w-5 h-5 text-tadow-600" />
                             <h2 className="text-xl font-semibold text-noir-900">
                                 Top {recommendations.length} Recommendations
                             </h2>
                         </div>
                         <p className="text-sm text-noir-500">
-                            Sorted by Verity Score
+                            Sorted by Tadow Score
                         </p>
                     </div>
 
@@ -71,7 +71,7 @@ export function ResultsPage() {
                                 <Link to={`/product/${product.id}`} className="block">
                                     <div className="product-card h-full flex flex-col">
                                         {/* Rank Badge */}
-                                        <div className="absolute -top-2 -left-2 w-8 h-8 rounded-full bg-verity-600 text-white flex items-center justify-center font-bold text-sm shadow-lg">
+                                        <div className="absolute -top-2 -left-2 w-8 h-8 rounded-full bg-tadow-600 text-white flex items-center justify-center font-bold text-sm shadow-lg">
                                             #{index + 1}
                                         </div>
 
@@ -91,8 +91,8 @@ export function ResultsPage() {
                                                     <p className="text-sm text-noir-500">{product.brand}</p>
                                                     <h3 className="font-semibold text-noir-900">{product.name}</h3>
                                                 </div>
-                                                <VerityScore
-                                                    score={product.verityScore}
+                                                <TadowScore
+                                                    score={product.tadowScore}
                                                     breakdown={product.scoreBreakdown}
                                                     size="sm"
                                                 />
@@ -108,7 +108,7 @@ export function ResultsPage() {
                                                     <span
                                                         key={p}
                                                         className={`text-xs px-2 py-1 rounded-full ${p === persona
-                                                                ? 'bg-verity-100 text-verity-700'
+                                                                ? 'bg-tadow-100 text-tadow-700'
                                                                 : 'bg-noir-100 text-noir-600'
                                                             }`}
                                                     >

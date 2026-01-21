@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 import type { ScoreBreakdown } from '@/types';
 
-interface VerityScoreProps {
+interface TadowScoreProps {
     score: number;
     breakdown: ScoreBreakdown;
     size?: 'sm' | 'md' | 'lg';
 }
 
-export function VerityScore({ score, breakdown, size = 'lg' }: VerityScoreProps) {
+export function TadowScore({ score, breakdown, size = 'lg' }: TadowScoreProps) {
     const sizeConfig = {
         sm: { ring: 80, stroke: 6, text: 'text-xl' },
         md: { ring: 120, stroke: 8, text: 'text-3xl' },

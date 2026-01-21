@@ -108,11 +108,11 @@ export function ChatInterface() {
             <div className="flex-shrink-0 px-6 py-4 border-b border-noir-100 bg-white/80 backdrop-blur-sm">
                 <div className="container-narrow">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-verity-100 flex items-center justify-center">
-                            <span className="text-verity-600 font-display font-bold">V</span>
+                        <div className="w-10 h-10 rounded-full bg-tadow-100 flex items-center justify-center">
+                            <span className="text-tadow-600 font-display font-bold">V</span>
                         </div>
                         <div>
-                            <h2 className="font-semibold text-noir-900">Verity Assistant</h2>
+                            <h2 className="font-semibold text-noir-900">Tadow Assistant</h2>
                             <p className="text-sm text-noir-500">Your AI Decision Concierge</p>
                         </div>
                     </div>
@@ -168,7 +168,7 @@ export function ChatInterface() {
             <div className="flex-shrink-0 px-6 py-4 border-t border-noir-100 bg-white/80 backdrop-blur-sm">
                 <div className="container-narrow">
                     <p className="text-center text-sm text-noir-400">
-                        Powered by Verity AI • No ads, no sponsored content
+                        Powered by Tadow AI • No ads, no sponsored content
                     </p>
                 </div>
             </div>

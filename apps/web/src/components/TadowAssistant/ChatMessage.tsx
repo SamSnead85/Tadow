@@ -40,8 +40,8 @@ export function ChatMessage({ message, onOptionSelect }: ChatMessageProps) {
                            bg-white border border-noir-200 rounded-xl
                            text-noir-700 font-medium text-sm
                            transition-all duration-200
-                           hover:border-verity-400 hover:bg-verity-50 hover:text-verity-700
-                           focus:outline-none focus:ring-2 focus:ring-verity-500/20"
+                           hover:border-tadow-400 hover:bg-tadow-50 hover:text-tadow-700
+                           focus:outline-none focus:ring-2 focus:ring-tadow-500/20"
                             >
                                 {option.icon && <span className="text-lg">{option.icon}</span>}
                                 {option.label}
