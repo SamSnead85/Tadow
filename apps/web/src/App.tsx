@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { HomePage } from './pages/HomePage';
 import { ProductPage } from './pages/ProductPage';
 import { ResultsPage } from './pages/ResultsPage';
 import { BrowsePage } from './pages/BrowsePage';
@@ -12,6 +11,7 @@ import { WatchlistPage } from './pages/WatchlistPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { CategoryPage } from './pages/CategoryPage';
 import { AccountPage } from './pages/AccountPage';
+import { AIAssistantPage } from './pages/AIAssistantPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -61,9 +61,9 @@ function App() {
                         <Route path="watchlist" element={<AnimatedPage><WatchlistPage /></AnimatedPage>} />
                         <Route path="category/:category" element={<AnimatedPage><CategoryPage /></AnimatedPage>} />
 
-                        {/* Product Research */}
-                        <Route path="assistant" element={<AnimatedPage><HomePage /></AnimatedPage>} />
-                        <Route path="ai" element={<AnimatedPage><HomePage /></AnimatedPage>} />
+                        {/* AI & Account */}
+                        <Route path="assistant" element={<AnimatedPage><AIAssistantPage /></AnimatedPage>} />
+                        <Route path="ai" element={<AnimatedPage><AIAssistantPage /></AnimatedPage>} />
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />
                         <Route path="how-it-works" element={<AnimatedPage><HowItWorksPage /></AnimatedPage>} />
                         <Route path="results" element={<AnimatedPage><ResultsPage /></AnimatedPage>} />
