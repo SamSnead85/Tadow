@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, Clock, Flame, CheckCircle, TrendingDown, TrendingUp, Heart, Eye, Share2, Zap, Star, Minus } from 'lucide-react';
 import { DealScore } from './DealScore';
+import { isInWatchlist, addToWatchlist, removeFromWatchlist } from '../../utils/storage';
 
 interface Deal {
     id: string;
@@ -52,6 +53,12 @@ const conditionLabels: Record<string, string> = {
 export function DealCard({ deal, variant = 'default', onQuickView }: DealCardProps) {
     const [isLiked, setIsLiked] = useState(false);
     const [showActions, setShowActions] = useState(false);
+    const [showSaveToast, setShowSaveToast] = useState(false);
+
+    // Check watchlist on mount
+    useEffect(() => {
+        setIsLiked(isInWatchlist(deal.id));
+    }, [deal.id]);
 
     const getTimeAgo = (dateStr?: string) => {
         if (!dateStr) return null;
@@ -85,7 +92,23 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
     const handleLike = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsLiked(!isLiked);
+
+        if (isLiked) {
+            removeFromWatchlist(deal.id);
+            setIsLiked(false);
+        } else {
+            addToWatchlist({
+                dealId: deal.id,
+                title: deal.title,
+                currentPrice: deal.currentPrice,
+                savedAt: new Date().toISOString(),
+                imageUrl: deal.imageUrl,
+                marketplace: deal.marketplace.name
+            });
+            setIsLiked(true);
+            setShowSaveToast(true);
+            setTimeout(() => setShowSaveToast(false), 2000);
+        }
     };
 
     const handleQuickView = (e: React.MouseEvent) => {
@@ -128,6 +151,18 @@ export function DealCard({ deal, variant = 'default', onQuickView }: DealCardPro
                 onHoverEnd={() => setShowActions(false)}
                 className={`deal-card group relative ${deal.isFeatured ? 'deal-card-featured' : ''}`}
             >
+                {/* Save Toast */}
+                {showSaveToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-4 py-2 bg-emerald-500 text-white text-sm font-medium rounded-lg shadow-lg"
+                    >
+                        ✓ Added to Watchlist
+                    </motion.div>
+                )}
+
                 {/* Image */}
                 <div className="aspect-[16/10] relative bg-zinc-800 overflow-hidden">
                     <img

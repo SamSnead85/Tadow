@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Flame, Menu, X, Sparkles, Command } from 'lucide-react';
 import { SearchModal, useSearchModal } from './SearchModal';
+import { MobileNav, MobileNavSpacer } from './MobileNav';
 
 export function Layout() {
     const location = useLocation();
@@ -272,6 +273,10 @@ export function Layout() {
                     </div>
                 </div>
             </footer>
+
+            {/* Mobile Navigation */}
+            <MobileNav />
+            <MobileNavSpacer />
         </div>
     );
 }

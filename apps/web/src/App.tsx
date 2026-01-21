@@ -8,6 +8,8 @@ import { HowItWorksPage } from './pages/HowItWorksPage';
 import { DealsPage } from './pages/DealsPage';
 import { SearchPage } from './pages/SearchPage';
 import { DealDetailPage } from './pages/DealDetailPage';
+import { WatchlistPage } from './pages/WatchlistPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { Layout } from './components/Layout';
 import { ToastProvider } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -54,13 +56,19 @@ function App() {
                         <Route path="deals" element={<AnimatedPage><DealsPage /></AnimatedPage>} />
                         <Route path="search" element={<AnimatedPage><SearchPage /></AnimatedPage>} />
                         <Route path="deal/:id" element={<AnimatedPage><DealDetailPage /></AnimatedPage>} />
+                        <Route path="watchlist" element={<AnimatedPage><WatchlistPage /></AnimatedPage>} />
 
                         {/* Product Research */}
                         <Route path="assistant" element={<AnimatedPage><HomePage /></AnimatedPage>} />
+                        <Route path="ai" element={<AnimatedPage><HomePage /></AnimatedPage>} />
                         <Route path="browse" element={<AnimatedPage><BrowsePage /></AnimatedPage>} />
                         <Route path="how-it-works" element={<AnimatedPage><HowItWorksPage /></AnimatedPage>} />
                         <Route path="results" element={<AnimatedPage><ResultsPage /></AnimatedPage>} />
                         <Route path="product/:id" element={<AnimatedPage><ProductPage /></AnimatedPage>} />
+                        <Route path="account" element={<AnimatedPage><DealsPage /></AnimatedPage>} />
+
+                        {/* 404 Catch All */}
+                        <Route path="*" element={<AnimatedPage><NotFoundPage /></AnimatedPage>} />
                     </Route>
                 </Routes>
             </ToastProvider>
