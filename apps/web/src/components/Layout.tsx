@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Flame, Menu, X, Sparkles, Command, User } from 'lucide-react';
+import { Search, Flame, Menu, X, Sparkles, ChevronDown, ShoppingCart, Command } from 'lucide-react';
 import { SearchModal, useSearchModal } from './SearchModal';
 import { MobileNav, MobileNavSpacer } from './MobileNav';
 import { AuthModal } from './AuthModal';
@@ -14,13 +14,25 @@ interface TadowUser {
     signedIn: boolean;
 }
 
+const categories = [
+    { value: '', label: 'All' },
+    { value: 'laptops', label: 'Laptops' },
+    { value: 'phones', label: 'Phones' },
+    { value: 'gaming', label: 'Gaming' },
+    { value: 'audio', label: 'Audio' },
+    { value: 'tvs', label: 'TVs' },
+];
+
 export function Layout() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const searchModal = useSearchModal();
     const [scrolled, setScrolled] = useState(false);
     const [authModalOpen, setAuthModalOpen] = useState(false);
     const [user, setUser] = useState<TadowUser | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchCategory, setSearchCategory] = useState('');
 
     // Check for existing session
     useEffect(() => {
@@ -36,6 +48,16 @@ export function Layout() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            const params = new URLSearchParams();
+            params.set('q', searchQuery);
+            if (searchCategory) params.set('category', searchCategory);
+            navigate(`/search?${params.toString()}`);
+        }
+    };
+
     const isActivePath = (path: string) => {
         if (path === '/') return location.pathname === '/' || location.pathname === '/deals';
         return location.pathname.startsWith(path);
@@ -43,8 +65,9 @@ export function Layout() {
 
     const navLinks = [
         { path: '/', label: 'Deals', icon: Flame },
-        { path: '/search', label: 'Search', icon: Search },
+        { path: '/categories', label: 'Categories' },
         { path: '/assistant', label: 'AI Assistant', icon: Sparkles, isAI: true },
+        { path: '/watchlist', label: 'Watchlist' },
     ];
 
     return (
@@ -53,119 +76,138 @@ export function Layout() {
             <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
             <CommandPalette />
 
-            {/* Navigation */}
-            <nav className={`nav-glass ${scrolled ? 'shadow-xl shadow-black/20' : ''}`}>
-                <div className="container-wide">
-                    <div className="flex items-center justify-between h-16">
-                        {/* Logo */}
-                        <Link to="/" className="flex items-center gap-3 group">
-                            <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="relative"
-                            >
-                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
+            {/* Amazon-Style Header */}
+            <header className={`fixed top-0 left-0 right-0 z-50 ${scrolled ? 'shadow-xl shadow-black/30' : ''}`}>
+                {/* Main Header Bar */}
+                <div className="bg-zinc-900 border-b border-zinc-800">
+                    <div className="container-wide">
+                        <div className="flex items-center gap-4 h-16">
+                            {/* Logo */}
+                            <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
                                 <img
                                     src="/favicon.png"
                                     alt="Tadow"
-                                    className="relative w-10 h-10 rounded-xl shadow-lg shadow-amber-500/20"
+                                    className="w-9 h-9 rounded-lg"
                                 />
-                            </motion.div>
-
-                            <div className="flex flex-col">
-                                <span className="font-bold text-xl text-white tracking-tight group-hover:text-amber-400 transition-colors">
+                                <span className="font-bold text-xl text-white hidden sm:block group-hover:text-amber-400 transition-colors">
                                     Tadow
                                 </span>
-                                <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest -mt-0.5">
-                                    Deals That Hit Different
-                                </span>
-                            </div>
-                        </Link>
+                            </Link>
 
-                        {/* Desktop Nav */}
-                        <div className="hidden md:flex items-center gap-1">
+                            {/* Search Bar - Prominent, Amazon-style */}
+                            <form onSubmit={handleSearch} className="flex-1 max-w-3xl">
+                                <div className="flex items-stretch h-11 rounded-lg overflow-hidden border-2 border-transparent focus-within:border-amber-500 transition-colors">
+                                    {/* Category Dropdown */}
+                                    <div className="relative hidden sm:block">
+                                        <select
+                                            value={searchCategory}
+                                            onChange={(e) => setSearchCategory(e.target.value)}
+                                            className="h-full px-3 pr-8 bg-zinc-700 text-zinc-300 text-sm border-r border-zinc-600 cursor-pointer focus:outline-none appearance-none"
+                                        >
+                                            {categories.map(cat => (
+                                                <option key={cat.value} value={cat.value}>{cat.label}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+                                    </div>
+
+                                    {/* Search Input */}
+                                    <input
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="Search deals..."
+                                        className="flex-1 px-4 bg-zinc-800 text-white placeholder:text-zinc-500 focus:outline-none text-base"
+                                    />
+
+                                    {/* Search Button */}
+                                    <button
+                                        type="submit"
+                                        className="px-5 bg-amber-500 hover:bg-amber-400 text-zinc-900 transition-colors"
+                                    >
+                                        <Search className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            </form>
+
+                            {/* Right Side Actions */}
+                            <div className="hidden md:flex items-center gap-1">
+                                {/* Account */}
+                                {user ? (
+                                    <Link to="/account" className="flex flex-col px-3 py-1 hover:bg-zinc-800 rounded transition-colors">
+                                        <span className="text-xs text-zinc-400">Hello, {user.name}</span>
+                                        <span className="text-sm font-semibold text-white flex items-center gap-1">
+                                            Account <ChevronDown className="w-3 h-3" />
+                                        </span>
+                                    </Link>
+                                ) : (
+                                    <button
+                                        onClick={() => setAuthModalOpen(true)}
+                                        className="flex flex-col px-3 py-1 hover:bg-zinc-800 rounded transition-colors text-left"
+                                    >
+                                        <span className="text-xs text-zinc-400">Hello, Sign in</span>
+                                        <span className="text-sm font-semibold text-white flex items-center gap-1">
+                                            Account <ChevronDown className="w-3 h-3" />
+                                        </span>
+                                    </button>
+                                )}
+
+                                {/* Watchlist */}
+                                <Link to="/watchlist" className="flex flex-col px-3 py-1 hover:bg-zinc-800 rounded transition-colors">
+                                    <span className="text-xs text-zinc-400">Returns</span>
+                                    <span className="text-sm font-semibold text-white">& Watchlist</span>
+                                </Link>
+
+                                {/* Cart/Saved */}
+                                <Link to="/watchlist" className="relative p-2 hover:bg-zinc-800 rounded transition-colors">
+                                    <ShoppingCart className="w-6 h-6 text-white" />
+                                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 text-zinc-900 text-xs font-bold rounded-full flex items-center justify-center">
+                                        0
+                                    </span>
+                                </Link>
+                            </div>
+
+                            {/* Mobile Menu Button */}
+                            <button
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="md:hidden p-2 text-zinc-400 hover:text-white"
+                            >
+                                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Secondary Nav Bar */}
+                <div className="bg-zinc-800/95 backdrop-blur-sm border-b border-zinc-700/50">
+                    <div className="container-wide">
+                        <div className="flex items-center gap-1 h-10 overflow-x-auto hide-scrollbar">
                             {navLinks.map((link) => {
                                 const isActive = isActivePath(link.path) && !(link.path === '/' && location.pathname === '/search');
                                 const Icon = link.icon;
 
                                 return (
-                                    <Link key={link.path} to={link.path} className="nav-link group">
-                                        <motion.div
-                                            whileHover={{ y: -1 }}
-                                            className={`flex items-center gap-1.5 ${isActive
-                                                ? link.isAI ? 'text-violet-400' : 'text-amber-400'
-                                                : 'text-zinc-400 group-hover:text-white'
-                                                }`}
-                                        >
-                                            {Icon && <Icon className="w-3.5 h-3.5" />}
-                                            {link.label}
-                                            {link.isAI && <Sparkles className="w-3 h-3 text-violet-400" />}
-                                        </motion.div>
-
-                                        {isActive && (
-                                            <motion.div
-                                                layoutId="nav-indicator"
-                                                className={`absolute bottom-0 left-2 right-2 h-0.5 rounded-full ${link.isAI ? 'bg-violet-400' : 'bg-amber-400'
-                                                    }`}
-                                                style={{ boxShadow: link.isAI ? '0 0 12px rgba(139, 92, 246, 0.5)' : '0 0 12px rgba(212, 168, 87, 0.5)' }}
-                                            />
-                                        )}
+                                    <Link
+                                        key={link.path}
+                                        to={link.path}
+                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium whitespace-nowrap transition-colors ${isActive
+                                            ? link.isAI ? 'text-violet-400 bg-violet-500/10' : 'text-amber-400 bg-amber-500/10'
+                                            : 'text-zinc-300 hover:text-white hover:bg-zinc-700'
+                                            }`}
+                                    >
+                                        {Icon && <Icon className="w-4 h-4" />}
+                                        {link.label}
                                     </Link>
                                 );
                             })}
+                            <div className="h-4 w-px bg-zinc-600 mx-2" />
+                            <Link to="/local" className="text-sm text-zinc-400 hover:text-white px-2 whitespace-nowrap">Local Deals</Link>
+                            <Link to="/marketplace" className="text-sm text-zinc-400 hover:text-white px-2 whitespace-nowrap">Marketplace</Link>
+                            <Link to="/sell" className="text-sm text-zinc-400 hover:text-white px-2 whitespace-nowrap">Sell</Link>
                         </div>
-
-                        {/* Right Side */}
-                        <div className="hidden md:flex items-center gap-3">
-                            <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={searchModal.open}
-                                className="flex items-center gap-2 px-3 py-1.5 bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 rounded-lg transition-colors"
-                            >
-                                <Search className="w-4 h-4 text-zinc-500" />
-                                <span className="text-sm text-zinc-500">Search...</span>
-                                <kbd className="flex items-center gap-0.5 px-1.5 py-0.5 bg-zinc-800 rounded text-[10px] text-zinc-500 font-mono">
-                                    <Command className="w-3 h-3" />K
-                                </kbd>
-                            </motion.button>
-
-                            {user ? (
-                                <Link to="/account" className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors">
-                                    <div className="w-7 h-7 rounded-full bg-amber-500/20 flex items-center justify-center">
-                                        <User className="w-4 h-4 text-amber-400" />
-                                    </div>
-                                    <span className="text-sm text-white">{user.name}</span>
-                                </Link>
-                            ) : (
-                                <>
-                                    <button
-                                        onClick={() => setAuthModalOpen(true)}
-                                        className="btn-ghost text-sm"
-                                    >
-                                        Sign In
-                                    </button>
-                                    <motion.button
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        onClick={() => setAuthModalOpen(true)}
-                                        className="btn-primary"
-                                    >
-                                        Get Started
-                                    </motion.button>
-                                </>
-                            )}
-                        </div>
-
-                        <button
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-2 text-zinc-400 hover:text-white"
-                        >
-                            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                        </button>
                     </div>
                 </div>
-            </nav>
+            </header>
 
             {/* Mobile Menu */}
             <AnimatePresence>
@@ -230,7 +272,7 @@ export function Layout() {
             </AnimatePresence>
 
             {/* Main Content */}
-            <main className="pt-16">
+            <main className="pt-28">
                 <Outlet />
             </main>
 

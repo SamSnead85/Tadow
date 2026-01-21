@@ -594,25 +594,18 @@ h2,
 .hero-gradient {
   @apply absolute inset-0 pointer-events-none;
   background:
-    /* Premium tech mesh overlay */
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23D4A857' fill-opacity='0.03'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-    /* Radiant gold orbs */
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 168, 87, 0.15), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139, 92, 246, 0.1), transparent),
-    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(245, 215, 142, 0.08), transparent),
-    /* Center spotlight */
-    radial-gradient(circle at 50% 30%, rgba(212, 168, 87, 0.08), transparent 60%),
-    /* Deep vignette */
-    radial-gradient(circle at 50% 50%, transparent 30%, rgba(10, 10, 12, 0.9) 90%);
+    /* Subtle top spotlight - warm gold */
+    radial-gradient(ellipse 120% 40% at 50% -5%, rgba(212, 168, 87, 0.08), transparent 50%),
+    /* Very subtle side accents */
+    radial-gradient(ellipse 50% 80% at 0% 50%, rgba(139, 92, 246, 0.04), transparent 50%),
+    radial-gradient(ellipse 50% 80% at 100% 50%, rgba(212, 168, 87, 0.03), transparent 50%),
+    /* Deep vignette for depth */
+    radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(5, 5, 7, 0.7) 100%);
 }
 
-/* Premium noise texture overlay */
+/* Remove the noisy pseudo-element for cleaner look */
 .hero-gradient::before {
-  content: '';
-  @apply absolute inset-0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
+  display: none;
 }
 
 /* Premium floating orb animation */

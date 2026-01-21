@@ -1,269 +1,255 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, X, ChevronDown, Check, DollarSign, TrendingDown, Zap } from 'lucide-react';
+import {
+    Grid, List, SlidersHorizontal, Check, ChevronDown,
+    ArrowUpDown, X, Zap
+} from 'lucide-react';
 
-interface FilterState {
+// Filter Types
+export interface FilterOptions {
     categories: string[];
     brands: string[];
-    priceMin: number | null;
-    priceMax: number | null;
-    minDiscount: number | null;
-    minScore: number | null;
-    condition: string[];
-    marketplace: string[];
-    sortBy: string;
-    onlyHot: boolean;
-    onlyAllTimeLow: boolean;
+    priceRange: [number, number];
+    discountMin: number;
+    inStockOnly: boolean;
+    hotDealsOnly: boolean;
+    sortBy: 'relevance' | 'price_low' | 'price_high' | 'discount' | 'newest' | 'popularity';
 }
 
-interface AdvancedFiltersProps {
-    filters: FilterState;
-    onChange: (filters: FilterState) => void;
+const defaultFilters: FilterOptions = {
+    categories: [],
+    brands: [],
+    priceRange: [0, 5000],
+    discountMin: 0,
+    inStockOnly: false,
+    hotDealsOnly: false,
+    sortBy: 'relevance',
+};
+
+// Advanced Filter Panel
+export function AdvancedFilterPanel({
+    filters,
+    onChange,
+    availableCategories,
+    availableBrands,
+    onReset,
+}: {
+    filters: FilterOptions;
+    onChange: (filters: FilterOptions) => void;
+    availableCategories: string[];
+    availableBrands: string[];
     onReset: () => void;
-    resultCount?: number;
-}
+}) {
+    const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['categories']));
 
-const CATEGORIES = ['Laptops', 'Phones', 'Gaming', 'Audio', 'TVs', 'Tablets', 'Wearables', 'Cameras', 'Home'];
-const BRANDS = ['Apple', 'Samsung', 'Sony', 'Microsoft', 'Google', 'Dell', 'HP', 'Lenovo', 'ASUS', 'LG', 'Bose', 'Nintendo'];
-const SORT_OPTIONS = [
-    { value: 'score', label: 'Best Score' },
-    { value: 'price-low', label: 'Price: Low to High' },
-    { value: 'price-high', label: 'Price: High to Low' },
-    { value: 'discount', label: 'Biggest Discount' },
-    { value: 'newest', label: 'Newest First' },
-];
-
-export function AdvancedFilters({ filters, onChange, onReset, resultCount }: AdvancedFiltersProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState<string | null>(null);
-
-    const updateFilter = <K extends keyof FilterState>(key: K, value: FilterState[K]) => {
-        onChange({ ...filters, [key]: value });
+    const toggleSection = (section: string) => {
+        setExpandedSections(prev => {
+            const next = new Set(prev);
+            if (next.has(section)) next.delete(section);
+            else next.add(section);
+            return next;
+        });
     };
 
-    const toggleArrayItem = (key: 'categories' | 'brands' | 'marketplace' | 'condition', item: string) => {
-        const current = filters[key];
-        const newValue = current.includes(item)
-            ? current.filter(i => i !== item)
-            : [...current, item];
-        updateFilter(key, newValue);
+    const toggleCategory = (cat: string) => {
+        onChange({
+            ...filters,
+            categories: filters.categories.includes(cat)
+                ? filters.categories.filter(c => c !== cat)
+                : [...filters.categories, cat]
+        });
     };
 
-    const activeFilterCount = [
-        filters.categories.length,
-        filters.brands.length,
-        filters.priceMin || filters.priceMax ? 1 : 0,
-        filters.minDiscount ? 1 : 0,
-        filters.minScore ? 1 : 0,
-        filters.condition.length,
-        filters.marketplace.length,
-        filters.onlyHot ? 1 : 0,
-        filters.onlyAllTimeLow ? 1 : 0,
-    ].reduce((a, b) => a + b, 0);
+    const toggleBrand = (brand: string) => {
+        onChange({
+            ...filters,
+            brands: filters.brands.includes(brand)
+                ? filters.brands.filter(b => b !== brand)
+                : [...filters.brands, brand]
+        });
+    };
+
+    const activeFilterCount =
+        filters.categories.length +
+        filters.brands.length +
+        (filters.discountMin > 0 ? 1 : 0) +
+        (filters.inStockOnly ? 1 : 0) +
+        (filters.hotDealsOnly ? 1 : 0);
 
     return (
-        <div className="relative">
-            {/* Filter Toggle Button */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${isOpen || activeFilterCount > 0
-                    ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                    : 'bg-zinc-800 text-zinc-300 border border-zinc-700 hover:border-zinc-600'
-                    }`}
-            >
-                <Filter className="w-4 h-4" />
-                <span>Filters</span>
+        <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl overflow-hidden">
+            <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <SlidersHorizontal className="w-5 h-5 text-amber-400" />
+                    <h3 className="font-semibold text-white">Filters</h3>
+                    {activeFilterCount > 0 && (
+                        <span className="px-2 py-0.5 bg-amber-500 text-black text-xs font-bold rounded-full">
+                            {activeFilterCount}
+                        </span>
+                    )}
+                </div>
                 {activeFilterCount > 0 && (
-                    <span className="w-5 h-5 rounded-full bg-amber-500 text-black text-xs font-bold flex items-center justify-center">
-                        {activeFilterCount}
-                    </span>
+                    <button onClick={onReset} className="text-sm text-zinc-400 hover:text-white">
+                        Reset
+                    </button>
                 )}
+            </div>
+
+            {/* Categories */}
+            <FilterSection
+                title="Categories"
+                expanded={expandedSections.has('categories')}
+                onToggle={() => toggleSection('categories')}
+            >
+                <div className="space-y-1">
+                    {availableCategories.map(cat => (
+                        <label key={cat} className="flex items-center gap-2 cursor-pointer py-1">
+                            <input
+                                type="checkbox"
+                                checked={filters.categories.includes(cat)}
+                                onChange={() => toggleCategory(cat)}
+                                className="rounded border-zinc-600 bg-zinc-800 text-amber-500 focus:ring-amber-500"
+                            />
+                            <span className="text-zinc-300 text-sm">{cat}</span>
+                        </label>
+                    ))}
+                </div>
+            </FilterSection>
+
+            {/* Brands */}
+            <FilterSection
+                title="Brands"
+                expanded={expandedSections.has('brands')}
+                onToggle={() => toggleSection('brands')}
+            >
+                <div className="grid grid-cols-2 gap-1">
+                    {availableBrands.slice(0, 12).map(brand => (
+                        <label key={brand} className="flex items-center gap-2 cursor-pointer py-1">
+                            <input
+                                type="checkbox"
+                                checked={filters.brands.includes(brand)}
+                                onChange={() => toggleBrand(brand)}
+                                className="rounded border-zinc-600 bg-zinc-800 text-amber-500 focus:ring-amber-500"
+                            />
+                            <span className="text-zinc-300 text-sm truncate">{brand}</span>
+                        </label>
+                    ))}
+                </div>
+            </FilterSection>
+
+            {/* Price Range */}
+            <FilterSection
+                title="Price Range"
+                expanded={expandedSections.has('price')}
+                onToggle={() => toggleSection('price')}
+            >
+                <div className="space-y-3">
+                    <div className="flex gap-2">
+                        <input
+                            type="number"
+                            value={filters.priceRange[0]}
+                            onChange={e => onChange({ ...filters, priceRange: [Number(e.target.value), filters.priceRange[1]] })}
+                            placeholder="Min"
+                            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white text-sm"
+                        />
+                        <span className="text-zinc-500 self-center">-</span>
+                        <input
+                            type="number"
+                            value={filters.priceRange[1]}
+                            onChange={e => onChange({ ...filters, priceRange: [filters.priceRange[0], Number(e.target.value)] })}
+                            placeholder="Max"
+                            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white text-sm"
+                        />
+                    </div>
+                </div>
+            </FilterSection>
+
+            {/* Discount */}
+            <FilterSection
+                title="Minimum Discount"
+                expanded={expandedSections.has('discount')}
+                onToggle={() => toggleSection('discount')}
+            >
+                <div className="space-y-2">
+                    <input
+                        type="range"
+                        min="0"
+                        max="75"
+                        step="5"
+                        value={filters.discountMin}
+                        onChange={e => onChange({ ...filters, discountMin: Number(e.target.value) })}
+                        className="w-full accent-amber-500"
+                    />
+                    <div className="flex justify-between text-xs text-zinc-500">
+                        <span>Any</span>
+                        <span className="text-amber-400">{filters.discountMin}%+</span>
+                        <span>75%</span>
+                    </div>
+                </div>
+            </FilterSection>
+
+            {/* Quick Filters */}
+            <div className="p-4 border-t border-zinc-800 space-y-2">
+                <label className="flex items-center justify-between cursor-pointer">
+                    <span className="flex items-center gap-2 text-zinc-300">
+                        <Zap className="w-4 h-4 text-orange-400" />
+                        Hot Deals Only
+                    </span>
+                    <input
+                        type="checkbox"
+                        checked={filters.hotDealsOnly}
+                        onChange={e => onChange({ ...filters, hotDealsOnly: e.target.checked })}
+                        className="rounded border-zinc-600 bg-zinc-800 text-amber-500"
+                    />
+                </label>
+                <label className="flex items-center justify-between cursor-pointer">
+                    <span className="flex items-center gap-2 text-zinc-300">
+                        <Check className="w-4 h-4 text-emerald-400" />
+                        In Stock Only
+                    </span>
+                    <input
+                        type="checkbox"
+                        checked={filters.inStockOnly}
+                        onChange={e => onChange({ ...filters, inStockOnly: e.target.checked })}
+                        className="rounded border-zinc-600 bg-zinc-800 text-amber-500"
+                    />
+                </label>
+            </div>
+        </div>
+    );
+}
+
+// Collapsible Filter Section
+function FilterSection({
+    title,
+    expanded,
+    onToggle,
+    children
+}: {
+    title: string;
+    expanded: boolean;
+    onToggle: () => void;
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="border-t border-zinc-800">
+            <button
+                onClick={onToggle}
+                className="w-full flex items-center justify-between p-4 text-left hover:bg-zinc-800/30"
+            >
+                <span className="font-medium text-white">{title}</span>
+                <ChevronDown className={`w-4 h-4 text-zinc-500 transition-transform ${expanded ? 'rotate-180' : ''}`} />
             </button>
-
-            {/* Filter Panel */}
             <AnimatePresence>
-                {isOpen && (
+                {expanded && (
                     <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute top-full left-0 mt-2 w-[340px] bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden"
                     >
-                        {/* Header */}
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
-                            <h3 className="text-sm font-semibold text-white">Filter Results</h3>
-                            <div className="flex items-center gap-2">
-                                {activeFilterCount > 0 && (
-                                    <button onClick={onReset} className="text-xs text-zinc-500 hover:text-amber-400">
-                                        Reset all
-                                    </button>
-                                )}
-                                <button onClick={() => setIsOpen(false)} className="p-1 text-zinc-500 hover:text-white">
-                                    <X className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-
-                        <div className="max-h-[60vh] overflow-y-auto">
-                            {/* Quick Toggles */}
-                            <div className="p-4 border-b border-zinc-800 space-y-2">
-                                <label className="flex items-center gap-3 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={filters.onlyHot}
-                                        onChange={(e) => updateFilter('onlyHot', e.target.checked)}
-                                        className="sr-only"
-                                    />
-                                    <div className={`w-5 h-5 rounded flex items-center justify-center border ${filters.onlyHot ? 'bg-orange-500 border-orange-500' : 'border-zinc-600'
-                                        }`}>
-                                        {filters.onlyHot && <Check className="w-3 h-3 text-white" />}
-                                    </div>
-                                    <Zap className="w-4 h-4 text-orange-400" />
-                                    <span className="text-sm text-white">Hot Deals Only</span>
-                                </label>
-                                <label className="flex items-center gap-3 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={filters.onlyAllTimeLow}
-                                        onChange={(e) => updateFilter('onlyAllTimeLow', e.target.checked)}
-                                        className="sr-only"
-                                    />
-                                    <div className={`w-5 h-5 rounded flex items-center justify-center border ${filters.onlyAllTimeLow ? 'bg-emerald-500 border-emerald-500' : 'border-zinc-600'
-                                        }`}>
-                                        {filters.onlyAllTimeLow && <Check className="w-3 h-3 text-white" />}
-                                    </div>
-                                    <TrendingDown className="w-4 h-4 text-emerald-400" />
-                                    <span className="text-sm text-white">All-Time Low Prices</span>
-                                </label>
-                            </div>
-
-                            {/* Price Range */}
-                            <div className="p-4 border-b border-zinc-800">
-                                <button
-                                    onClick={() => setActiveSection(activeSection === 'price' ? null : 'price')}
-                                    className="w-full flex items-center justify-between text-sm text-white"
-                                >
-                                    <span className="flex items-center gap-2">
-                                        <DollarSign className="w-4 h-4 text-emerald-400" />
-                                        Price Range
-                                    </span>
-                                    <ChevronDown className={`w-4 h-4 transition-transform ${activeSection === 'price' ? 'rotate-180' : ''}`} />
-                                </button>
-                                {activeSection === 'price' && (
-                                    <div className="mt-3 flex items-center gap-2">
-                                        <input
-                                            type="number"
-                                            placeholder="Min"
-                                            value={filters.priceMin || ''}
-                                            onChange={(e) => updateFilter('priceMin', e.target.value ? Number(e.target.value) : null)}
-                                            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white"
-                                        />
-                                        <span className="text-zinc-500">-</span>
-                                        <input
-                                            type="number"
-                                            placeholder="Max"
-                                            value={filters.priceMax || ''}
-                                            onChange={(e) => updateFilter('priceMax', e.target.value ? Number(e.target.value) : null)}
-                                            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white"
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Categories */}
-                            <div className="p-4 border-b border-zinc-800">
-                                <button
-                                    onClick={() => setActiveSection(activeSection === 'categories' ? null : 'categories')}
-                                    className="w-full flex items-center justify-between text-sm text-white"
-                                >
-                                    <span>Categories {filters.categories.length > 0 && `(${filters.categories.length})`}</span>
-                                    <ChevronDown className={`w-4 h-4 transition-transform ${activeSection === 'categories' ? 'rotate-180' : ''}`} />
-                                </button>
-                                {activeSection === 'categories' && (
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {CATEGORIES.map(cat => (
-                                            <button
-                                                key={cat}
-                                                onClick={() => toggleArrayItem('categories', cat)}
-                                                className={`px-3 py-1.5 text-xs rounded-full transition-colors ${filters.categories.includes(cat)
-                                                    ? 'bg-amber-500 text-black'
-                                                    : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-                                                    }`}
-                                            >
-                                                {cat}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Brands */}
-                            <div className="p-4 border-b border-zinc-800">
-                                <button
-                                    onClick={() => setActiveSection(activeSection === 'brands' ? null : 'brands')}
-                                    className="w-full flex items-center justify-between text-sm text-white"
-                                >
-                                    <span>Brands {filters.brands.length > 0 && `(${filters.brands.length})`}</span>
-                                    <ChevronDown className={`w-4 h-4 transition-transform ${activeSection === 'brands' ? 'rotate-180' : ''}`} />
-                                </button>
-                                {activeSection === 'brands' && (
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {BRANDS.map(brand => (
-                                            <button
-                                                key={brand}
-                                                onClick={() => toggleArrayItem('brands', brand)}
-                                                className={`px-3 py-1.5 text-xs rounded-full transition-colors ${filters.brands.includes(brand)
-                                                    ? 'bg-amber-500 text-black'
-                                                    : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-                                                    }`}
-                                            >
-                                                {brand}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Min Discount */}
-                            <div className="p-4 border-b border-zinc-800">
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="text-sm text-white">Minimum Discount</span>
-                                    <span className="text-sm text-amber-400">{filters.minDiscount || 0}%+</span>
-                                </div>
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="50"
-                                    step="5"
-                                    value={filters.minDiscount || 0}
-                                    onChange={(e) => updateFilter('minDiscount', Number(e.target.value) || null)}
-                                    className="w-full accent-amber-500"
-                                />
-                            </div>
-
-                            {/* Sort */}
-                            <div className="p-4">
-                                <span className="text-sm text-white block mb-2">Sort By</span>
-                                <select
-                                    value={filters.sortBy}
-                                    onChange={(e) => updateFilter('sortBy', e.target.value)}
-                                    className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-white"
-                                >
-                                    {SORT_OPTIONS.map(opt => (
-                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* Footer */}
-                        <div className="p-4 border-t border-zinc-800 bg-zinc-900/80">
-                            <button
-                                onClick={() => setIsOpen(false)}
-                                className="w-full py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors"
-                            >
-                                {resultCount !== undefined ? `Show ${resultCount} results` : 'Apply Filters'}
-                            </button>
+                        <div className="px-4 pb-4">
+                            {children}
                         </div>
                     </motion.div>
                 )}
@@ -272,42 +258,171 @@ export function AdvancedFilters({ filters, onChange, onReset, resultCount }: Adv
     );
 }
 
-// Default filter state
-export function getDefaultFilters(): FilterState {
+// Sort Dropdown
+export function SortDropdown({ value, onChange }: { value: FilterOptions['sortBy']; onChange: (value: FilterOptions['sortBy']) => void }) {
+    const [open, setOpen] = useState(false);
+
+    const options = [
+        { value: 'relevance', label: 'Most Relevant' },
+        { value: 'price_low', label: 'Price: Low to High' },
+        { value: 'price_high', label: 'Price: High to Low' },
+        { value: 'discount', label: 'Biggest Discount' },
+        { value: 'newest', label: 'Newest First' },
+        { value: 'popularity', label: 'Most Popular' },
+    ];
+
+    const current = options.find(o => o.value === value);
+
+    return (
+        <div className="relative">
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:border-zinc-600"
+            >
+                <ArrowUpDown className="w-4 h-4" />
+                <span>{current?.label || 'Sort'}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+            </button>
+
+            <AnimatePresence>
+                {open && (
+                    <>
+                        <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="absolute top-full right-0 mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl z-20 overflow-hidden"
+                        >
+                            {options.map(option => (
+                                <button
+                                    key={option.value}
+                                    onClick={() => { onChange(option.value as any); setOpen(false); }}
+                                    className={`w-full flex items-center justify-between px-4 py-2 text-left text-sm transition-colors ${value === option.value
+                                        ? 'bg-amber-500/10 text-amber-400'
+                                        : 'text-zinc-300 hover:bg-zinc-800'
+                                        }`}
+                                >
+                                    {option.label}
+                                    {value === option.value && <Check className="w-4 h-4" />}
+                                </button>
+                            ))}
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
+
+// View Toggle
+export function ViewToggle({ view, onChange }: { view: 'grid' | 'list'; onChange: (view: 'grid' | 'list') => void }) {
+    return (
+        <div className="flex items-center bg-zinc-800 rounded-lg p-1">
+            <button
+                onClick={() => onChange('grid')}
+                className={`p-2 rounded-md transition-colors ${view === 'grid' ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-white'
+                    }`}
+            >
+                <Grid className="w-4 h-4" />
+            </button>
+            <button
+                onClick={() => onChange('list')}
+                className={`p-2 rounded-md transition-colors ${view === 'list' ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-white'
+                    }`}
+            >
+                <List className="w-4 h-4" />
+            </button>
+        </div>
+    );
+}
+
+// Active Filter Tags
+export function ActiveFilterTags({
+    filters,
+    onRemove,
+    onClear
+}: {
+    filters: FilterOptions;
+    onRemove: (type: string, value: string) => void;
+    onClear: () => void;
+}) {
+    const tags: { type: string; value: string; label: string }[] = [];
+
+    filters.categories.forEach(cat => tags.push({ type: 'category', value: cat, label: cat }));
+    filters.brands.forEach(brand => tags.push({ type: 'brand', value: brand, label: brand }));
+    if (filters.discountMin > 0) tags.push({ type: 'discount', value: String(filters.discountMin), label: `${filters.discountMin}%+ off` });
+    if (filters.inStockOnly) tags.push({ type: 'inStock', value: 'true', label: 'In Stock' });
+    if (filters.hotDealsOnly) tags.push({ type: 'hotDeals', value: 'true', label: 'Hot Deals' });
+
+    if (tags.length === 0) return null;
+
+    return (
+        <div className="flex flex-wrap items-center gap-2">
+            {tags.map((tag, i) => (
+                <span
+                    key={`${tag.type}-${tag.value}-${i}`}
+                    className="flex items-center gap-1 px-3 py-1 bg-amber-500/20 border border-amber-500/30 text-amber-400 text-sm rounded-full"
+                >
+                    {tag.label}
+                    <button onClick={() => onRemove(tag.type, tag.value)} className="hover:text-white">
+                        <X className="w-3 h-3" />
+                    </button>
+                </span>
+            ))}
+            <button
+                onClick={onClear}
+                className="text-sm text-zinc-500 hover:text-white"
+            >
+                Clear all
+            </button>
+        </div>
+    );
+}
+
+// Hook for filter management
+export function useFilters(initialFilters = defaultFilters) {
+    const [filters, setFilters] = useState<FilterOptions>(initialFilters);
+
+    const updateFilters = (updates: Partial<FilterOptions>) => {
+        setFilters(prev => ({ ...prev, ...updates }));
+    };
+
+    const resetFilters = () => setFilters(defaultFilters);
+
+    const removeFilter = (type: string, value: string) => {
+        switch (type) {
+            case 'category':
+                updateFilters({ categories: filters.categories.filter(c => c !== value) });
+                break;
+            case 'brand':
+                updateFilters({ brands: filters.brands.filter(b => b !== value) });
+                break;
+            case 'discount':
+                updateFilters({ discountMin: 0 });
+                break;
+            case 'inStock':
+                updateFilters({ inStockOnly: false });
+                break;
+            case 'hotDeals':
+                updateFilters({ hotDealsOnly: false });
+                break;
+        }
+    };
+
     return {
-        categories: [],
-        brands: [],
-        priceMin: null,
-        priceMax: null,
-        minDiscount: null,
-        minScore: null,
-        condition: [],
-        marketplace: [],
-        sortBy: 'score',
-        onlyHot: false,
-        onlyAllTimeLow: false,
+        filters,
+        updateFilters,
+        setFilters,
+        resetFilters,
+        removeFilter,
     };
 }
 
-// Apply filters to deals
-export function applyFilters<T extends {
-    category?: string;
-    brand?: string;
-    currentPrice: number;
-    discountPercent: number;
-    dealScore?: number;
-    isHot?: boolean;
-    isAllTimeLow?: boolean;
-}>(deals: T[], filters: FilterState): T[] {
-    return deals.filter(deal => {
-        if (filters.categories.length && !filters.categories.includes(deal.category || '')) return false;
-        if (filters.brands.length && !filters.brands.includes(deal.brand || '')) return false;
-        if (filters.priceMin && deal.currentPrice < filters.priceMin) return false;
-        if (filters.priceMax && deal.currentPrice > filters.priceMax) return false;
-        if (filters.minDiscount && deal.discountPercent < filters.minDiscount) return false;
-        if (filters.minScore && (deal.dealScore || 0) < filters.minScore) return false;
-        if (filters.onlyHot && !deal.isHot) return false;
-        if (filters.onlyAllTimeLow && !deal.isAllTimeLow) return false;
-        return true;
-    });
-}
+export default {
+    AdvancedFilterPanel,
+    SortDropdown,
+    ViewToggle,
+    ActiveFilterTags,
+    useFilters,
+};
